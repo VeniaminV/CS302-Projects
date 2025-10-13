@@ -5,10 +5,10 @@
 
 
 
-namespace CuisineVendorList
+//namespace CuisineVendorList
 {
 	//Node for CuisineVendor LLL
-	class Node : public CuisineVendor
+	class Node_LLL : public CuisineVendor
 	{
 		public:
 			Node(const CuisineVendor & source)
@@ -24,10 +24,10 @@ namespace CuisineVendorList
 
 
 
-namespace EntertainerVendorList
+//namespace EntertainerVendorList
 {
 	//Node for EntertainerVendor CLL
-	class Node : public EntertainerVendor
+	class Node_CLL : public EntertainerVendor
 	{
 		publice:
 			Node(const EntertainerVendor & source) 
