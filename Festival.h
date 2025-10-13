@@ -109,6 +109,8 @@ class EntertainerVendor : public Vendor
 public: 
 	EntertainerVendor(const char * name, const string & group, int duration,
 				 const string & stageTime); //Constructor
+	EntertainerVendor(const EntertainerVendor & src);       // COPY CONSTRUCTOR
+    	EntertainerVendor & operator=(const EntertainerVendor & src); // ASSIGNMENT
 	~EntertainerVendor();   //destructor
 
 
