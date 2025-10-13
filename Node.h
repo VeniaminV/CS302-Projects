@@ -29,7 +29,7 @@
 	//Node for EntertainerVendor CLL
 	class Node_CLL : public EntertainerVendor
 	{
-		publice:
+		public:
 			Node(const EntertainerVendor & source) 
 				: EntertainerVendor(source), next(nullptr) {}
 		
