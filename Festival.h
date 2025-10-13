@@ -19,20 +19,29 @@ class Festival
 {
 public:
 	Festival();
+ 	Festival(const Festival & source);               // copy constructor
+        Festival & operator=(const Festival & source);   // assignment operator
 	~Festival();
 
-	void add_trincket_vendor(const TrinketVendor& vendor); //will use vector to store;
-	void add_cuisine_vendor(CuisineVendor * vendor);   //will use LLL
-	void add_entertainer(EntertainerVEndor * vendor);   //will use CLL
+	bool add_trincket_vendor(const TrinketVendor & vendor); //will use vector to store;
+	bool add_cuisine_vendor(const CuisineVendor & vendor);   //will use LLL
+	bool add_entertainer(const EntertainerVendor & vendor);   //will use CLL
 
 private:
 
-	vector<TrinketVendor> trinkets;
-	CuisineVEndor * cuisine_head;     //For the LLL
-	EntertainerVendor * entertainer_tail;    //For the CLL, tail pointer for easy insert
+	vector<TrinketVendor> trinkets;			//Vector to store trinkets
+	CuisineVendor:: Node * cuisine_head;     	//For the LLL to store cuisine vendors
+	EntertainerVendor:: Node * entertainer_tail;    //For the CLL, tail pointer for easy insert to store Entertainer vendors
+
+
+   	// Helper functions for deep copies
+    	void copy_cuisine_list(cuisine_vendor::Node *& dest, cuisine_vendor::Node * source);
+    	void copy_entertainer_list(entertainer_vendor::Node *& dest, entertainer_vendor::Node * source);
+    	void clear_cuisine_list(cuisine_vendor::Node *& head);
+    	void clear_entertainer_list(entertainer_vendor::Node *& tail);
 
 	//Recursion insert functions for LLL and CLL
-	void insert_cuisine_recursive(CuisineVEndor *& head, cuisineVendor * vendor);
+	void insert_cuisine_recursive(CuisineVendor *& head, cuisineVendor * vendor);
 	void insert_entertainer_recursive(EntertainerVendor *& tail. EntertainerVendor * vendor);
 
 };
@@ -47,9 +56,9 @@ public:
 	Vendor & operator = (const Vendor & src; //assignment operator
 	~Vendor(); 			//destructor
 
-	void display_name() const;
-	bool match_name(const char * target) const;
-	void set_name(const char * new_name);
+	bool display_info() const;				//show vendors info
+	bool rename_vendor(const char * new_name);	//update vendors name
+	bool describe() const;				//explains what the vendor has to offer
 
 private:
 	char * name;
@@ -65,45 +74,43 @@ public:
 	TrinketVendor & operator = (const TrinketVendor & src);            //assignment operator
 	~TrinketVendor();						//destructor
 
-	void add_item(const string & itemName, float price);
-	void list_item() const;
+	bool add_item(const string & itemName, float price);		
+	bool list_item() const;
 	bool sell_item(const string & itemName);
 	
 private: 
 	char * signature_item;
-	struct Item{
-		string name;
-		float price;
-	};
-	vector<Item> inventory;
+	vector<pair<string, float>> inventory;
 
-	void set_signature(const char* s);
-	void clear_signature();
+	bool set_signature(const char* s);
+	bool clear_signature();
 
 };
 
 
-
+//This class will have a LLL
 class CuisineVendor : public Vendor 
 {
 public: 
 	CuisineVendor(const char * name, const vector<string> & items);       //constructor
 	~CuisineVendor();							//destructor
 
-	void show_menu() const;
-	bool has_item(const string & food) const;
-	void add_item(const string & food);
+	bool show_menu() const;
+	bool take_order(const string & food) const;
+ 	bool recommend_item() const;
+	bool restock_item(const string & food);
 
 	CuisineVendor * next;
 
 private:
 	vector<string> menu;
+	bool take_order_recursive(const string & food, size_t index) const {}
 };
 
 
 
 
-
+//This class will have a CLL
 class EntertainerVendor : public Vendor 
 {
 public: 
@@ -112,14 +119,15 @@ public:
 	~EntertainerVendor();   //destructor
 
 
-	void announce() const;
-	int get_duratio() const;
-	void change_time(const string & newTime):
+	bool announce() const;
+//	int get_duratio() const;
+	bool perform_and_remove(EntertainerVendor *& tail)
+	bool reschedule(const string & newTime):
 
 	EntertainerVendor * next;
 
 private:
-	stging group_name;
+	string group_name;
 	int duration;
 	string string stage_time;
 };
