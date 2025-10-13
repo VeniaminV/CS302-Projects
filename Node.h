@@ -5,7 +5,7 @@
 
 
 
-namespace CuisineVendor
+namespace CuisineVendorList
 {
 	//Node for CuisineVendor LLL
 	class Node : public CuisineVendor
@@ -24,7 +24,7 @@ namespace CuisineVendor
 
 
 
-namespace EntertainerVendor
+namespace EntertainerVendorList
 {
 	//Node for EntertainerVendor CLL
 	class Node : public EntertainerVendor

@@ -134,16 +134,28 @@ private:
 	EntertainerVendor:: Node * entertainer_tail;    //For the CLL, tail pointer for easy insert to store Entertainer vendors
 
 
+	// Deep copy helpers
+    	void copy_cuisine_list(CuisineVendorList::Node *&dest, CuisineVendorList::Node *source);
+    	void copy_entertainer_list(EntertainerVendorList::Node *&dest, EntertainerVendorList::Node *source);
+
+    	// Cleanup helpers
+    	void clear_cuisine_list(CuisineVendorList::Node *&head);
+    	void clear_entertainer_list(EntertainerVendorList::Node *&tail);
+
+    	// Recursive insert helpers
+    	void insert_cuisine_recursive(CuisineVendorList::Node *&head, const CuisineVendor &vendor);
+    	void insert_entertainer_recursive(EntertainerVendorList::Node *&tail, const EntertainerVendor &vendor);
+/*
    	// Helper functions for deep copies
-    	void copy_cuisine_list(cuisine_vendor::Node *& dest, cuisine_vendor::Node * source);
-    	void copy_entertainer_list(entertainer_vendor::Node *& dest, entertainer_vendor::Node * source);
-    	void clear_cuisine_list(cuisine_vendor::Node *& head);
-    	void clear_entertainer_list(entertainer_vendor::Node *& tail);
+    	bool copy_cuisine_list(CuisineVendorList::Node *& dest, cuisine_vendor::Node * source);
+    	bool copy_entertainer_list(entertainer_vendor::Node *& dest, entertainer_vendor::Node * source);
+    	bool clear_cuisine_list(cuisine_vendor::Node *& head);
+    	bool clear_entertainer_list(entertainer_vendor::Node *& tail);
 
 	//Recursion insert functions for LLL and CLL
-	void insert_cuisine_recursive(CuisineVendor *& head, cuisineVendor * vendor);
-	void insert_entertainer_recursive(EntertainerVendor *& tail. EntertainerVendor * vendor);
-
+	bool insert_cuisine_recursive(CuisineVendor *& head, cuisineVendor * vendor);
+	bool insert_entertainer_recursive(EntertainerVendor *& tail. EntertainerVendor * vendor);
+*/
 };
 
 
