@@ -1,9 +1,11 @@
-//Veniamin Velikoreskikh  veniamin@pdx.edu
-// cs302 fall 2025
-// Karla Fant
+/*
+Veniamin Velikoreskikh  veniamin@pdx.edu
+cs302 fall 2025
+Karla Fant assignment 1
 
-//This is the .h file for proram 1 about oktoberfest.
-//It will contain 5 classes with hierarchy, and the prototypes
+This file will contain the class prototypes for the Vendor and 
+the 3 derived classes from it. 
+*/
 
 #include <cstring>
 #include <cctype>
@@ -22,6 +24,7 @@ class EntertainerVendor;
 
 
 
+//---------------------------------------------------------------------------------------------
 class Vendor
 {
 public: 
@@ -44,6 +47,7 @@ private:
 
 
 
+//---------------------------------------------------------------------------------------------
 class TrinketVendor : public Vendor
 {
 public:
@@ -61,12 +65,13 @@ private:
 	char * signature_item;
 	vector<pair<string, float>> inventory;    //description and price
 
-	bool set_signature(const char* s);
+	bool set_signature(const char* s);		//sets the signature item 
 	bool clear_signature();
 
 };
 
 
+//---------------------------------------------------------------------------------------------
 //This class will have a LLL
 class CuisineVendor : public Vendor 
 {
@@ -103,14 +108,15 @@ private:
 
 
 
+//---------------------------------------------------------------------------------------------
 //This class will have a CLL
 class EntertainerVendor : public Vendor 
 {
 public: 
 	EntertainerVendor(const char * name, const string & group, int duration,
 				 const string & stageTime); //Constructor
-	EntertainerVendor(const EntertainerVendor & src);       // COPY CONSTRUCTOR
-    	EntertainerVendor & operator=(const EntertainerVendor & src); // ASSIGNMENT
+//	EntertainerVendor(const EntertainerVendor & src);       // COPY CONSTRUCTOR
+//    	EntertainerVendor & operator=(const EntertainerVendor & src); // ASSIGNMENT
 	~EntertainerVendor();   //destructor
 
 
