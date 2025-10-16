@@ -63,8 +63,8 @@ public:
 	bool list_item() const;
 	bool sell_item(const string & itemName);
 
- 	bool display_info() const;            
-    	bool describe() const;    
+// 	bool display_info() const;            
+ //   	bool describe() const;    
 	
 private: 
 	char * signature_item;
@@ -92,11 +92,9 @@ public:
  	bool recommend_item() const;
 	bool restock_item(const string & food);
 
-	bool display_info() const;
-    	bool describe() const;
+//	bool display_info() const;
+ //   	bool describe() const;
 	
-	CuisineVendor * next;
-
 private:
 //	vector<string> menu;
 	bool take_order_recursive(const string & food, size_t index) const;
@@ -119,11 +117,8 @@ public:
 	bool perform_and_remove(EntertainerVendor *& tail);
 	bool reschedule(const string & newTime);
 
- 	bool display_info() const;
-    	bool describe() const;
-
-	EntertainerVendor * next;
-
+ //	bool display_info() const;
+   // 	bool describe() const;
 
 private:
 	string group_name;

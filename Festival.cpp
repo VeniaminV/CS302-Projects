@@ -145,7 +145,7 @@ bool TrinketVendor::sell_item_recursive(const string & itemName, size_t index)
 // CuisineVendor
 //------------------------------------------------------------------------------------------------
 CuisineVendor::CuisineVendor(const char * name, const vector<string> & items)
-//    : Vendor(name), menu(items)
+    : Vendor(name)//, menu(items)
 {}
 
 CuisineVendor::~CuisineVendor()
