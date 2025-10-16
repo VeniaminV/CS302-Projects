@@ -62,10 +62,16 @@ public:
 	bool add_item(const string & itemName, float price);		
 	bool list_item() const;
 	bool sell_item(const string & itemName);
+
+ 	bool display_info() const;            
+    	bool describe() const;    
 	
 private: 
 	char * signature_item;
 	vector<pair<string, float>> inventory;    //description and price
+
+	bool list_item_recursive(size_t index) const;
+	bool sell_item_recursive(const string & itemName, size_t index);
 
 	bool set_signature(const char* s);		//sets the signature item 
 	bool clear_signature();
@@ -86,24 +92,13 @@ public:
  	bool recommend_item() const;
 	bool restock_item(const string & food);
 
-/*
-	//Node for CuisineVendor LLL
-	class Node_LLL
-	{
-		public:
-			Node(const CuisineVendor & source)
-				: CuisineVendor(source), next(nullptr) {}
-		
-			bool set_next(Node_LLL *& new_next) {next = new_next; } 
-			Node_LLL *& get_next() {return next; }
-			CuisineVEndor & get_data() const {return data; }
-		private:
-			Node_LLL * next;
-			CuisineVendor data;
-	};
-*/
+	bool display_info() const;
+    	bool describe() const;
+	
+	CuisineVendor * next;
+
 private:
-	vector<string> menu;
+//	vector<string> menu;
 	bool take_order_recursive(const string & food, size_t index) const;
 };
 
@@ -117,33 +112,18 @@ class EntertainerVendor : public Vendor
 public: 
 	EntertainerVendor(const char * name, const string & group, int duration,
 				 const string & stageTime); //Constructor
-//	EntertainerVendor(const EntertainerVendor & src);       // COPY CONSTRUCTOR
-//    	EntertainerVendor & operator=(const EntertainerVendor & src); // ASSIGNMENT
 	~EntertainerVendor();   //destructor
 
 
 	bool announce() const;
-//	int get_duratio() const;
 	bool perform_and_remove(EntertainerVendor *& tail);
 	bool reschedule(const string & newTime);
 
+ 	bool display_info() const;
+    	bool describe() const;
+
 	EntertainerVendor * next;
 
-
-/*
-	class Node_CLL
-    	{
-    	public:
-        	Node_CLL(const EntertainerVendor & source) : data(source), next(nullptr) {}
-        	void set_next(Node_CLL * new_next) { next = new_next; }
-        	Node_CLL *& get_next() { return next; }
-        	EntertainerVendor & get_data() { return data; }
-        	const EntertainerVendor & get_data() const { return data; }
-    	private:
-        	EntertainerVendor data;
-        	Node_CLL * next;
-    	};
-*/
 
 private:
 	string group_name;

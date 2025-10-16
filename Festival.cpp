@@ -105,17 +105,146 @@ bool TrinketVendor::clear_signature()
     return true;
 }
 
+//adds trinket vendors
+bool TrinketVendor::add_item(const string & itemName, float price)
+{
+    inventory.push_back(make_pair(itemName, price));
+    return true;
+}
+
+bool TrinketVendor::list_item() const
+{
+    return list_item_recursive(0);
+}
+
+bool TrinketVendor::list_item_recursive(size_t index) const
+{
+    if (index >= inventory.size()) return false;
+    cout << " - " << inventory[index].first << " ($" << inventory[index].second << ")\n";
+    return list_item_recursive(index + 1) || true;
+}
+
+bool TrinketVendor::sell_item(const string & itemName)
+{
+    return sell_item_recursive(itemName, 0);
+}
+
+bool TrinketVendor::sell_item_recursive(const string & itemName, size_t index)
+{
+    if (index >= inventory.size()) return false;
+    if (inventory[index].first == itemName)
+    {
+        inventory.erase(inventory.begin() + index);
+        return true;
+    }
+    return sell_item_recursive(itemName, index + 1);
+}
+
 
 
 // CuisineVendor
 //------------------------------------------------------------------------------------------------
 CuisineVendor::CuisineVendor(const char * name, const vector<string> & items)
-    : Vendor(name), menu(items)
+//    : Vendor(name), menu(items)
 {}
 
 CuisineVendor::~CuisineVendor()
 {}
 
+/*
+// Recursively delete all nodes
+void CuisineVendor::delete_all(Node_LLL * & head)
+{
+    if (!head) return;
+    delete_all(head->get_next());
+    delete head;
+    head = nullptr;
+}
+
+// Recursively display the full menu
+bool CuisineVendor::show_menu() const
+{
+    if (!head)
+    {
+        cout << "No menu items available." << endl;
+        return false;
+    }
+
+    cout << "Menu for " << get_name() << ":" << endl;
+    return show_menu_recursive(head);
+}
+
+bool CuisineVendor::show_menu_recursive(Node_LLL * current) const
+{
+    if (!current)
+        return true; // base case
+
+    cout << " - " << current->get_data().get_name() << endl;
+    return show_menu_recursive(current->get_next());
+}
+
+
+// Recursively search for a food item
+bool CuisineVendor::take_order(const string & food) const
+{
+    if (!head)
+    {
+        cout << "No items to take an order from." << endl;
+        return false;
+    }
+    return take_order_recursive(food, head);
+}
+
+bool CuisineVendor::take_order_recursive(const string & food, Node_LLL * current) const
+{
+    if (!current)
+    {
+        cout << "Sorry, " << food << " is not on the menu." << endl;
+        return false;
+    }
+
+    if (current->get_data().get_name() == food)
+    {
+        cout << "Order placed for " << food << "!" << endl;
+        return true;
+    }
+
+    return take_order_recursive(food, current->get_next());
+}
+
+
+// Recommend the first item (head of LLL)
+bool CuisineVendor::recommend_item() const
+{
+    if (!head)
+    {
+        cout << "No items to recommend." << endl;
+        return false;
+    }
+
+    cout << "Chef recommends: " << head->get_data().get_name() << endl;
+    return true;
+}
+
+// Recursively add a new food item to the LLL
+bool CuisineVendor::restock_item(const string & food)
+{
+    Node_LLL * new_node = new Node_LLL(CuisineVendor(food.c_str()));
+    return restock_recursive(head, new_node);
+}
+
+bool CuisineVendor::restock_recursive(Node_LLL * & head, Node_LLL * new_node)
+{
+    if (!head)
+    {
+        head = new_node;
+        cout << "Restocked: " << new_node->get_data().get_name() << endl;
+        return true;
+    }
+
+    return restock_recursive(head->get_next(), new_node);
+}
+*/
 
 
 
@@ -131,26 +260,20 @@ EntertainerVendor::~EntertainerVendor()
 }
 
 
-/*   
-This is not really needed because i don't have any dynamically allocated data in Entertiner vendor
-I'll keep it commented out for now. 
 
-EntertainerVendor::EntertainerVendor(const EntertainerVendor & src)
-    : Vendor(src), next(nullptr), group_name(src.group_name), duration(src.duration), stage_time(src.stage_time)
-{}
 
-EntertainerVendor & EntertainerVendor::operator=(const EntertainerVendor & src)
-{
-    if (this == &src) return *this;
-    Vendor::operator=(src);
-    group_name = src.group_name;
-    duration = src.duration;
-    stage_time = src.stage_time;
-    next = nullptr;
-    return *this;
-}
-*/
 
+
+
+
+
+
+
+/*
+
+
+//display and describ efunction for all of the classes
+//-------------------------------------------------------------------------------------------
 
 bool Vendor::display_info() const
 {
@@ -229,4 +352,4 @@ bool EntertainerVendor::describe() const
 }
 
 //--------------------------------------------------------------------------------------------------
-
+*/
