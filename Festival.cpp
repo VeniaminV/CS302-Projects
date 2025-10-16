@@ -150,3 +150,83 @@ EntertainerVendor & EntertainerVendor::operator=(const EntertainerVendor & src)
     return *this;
 }
 */
+
+
+bool Vendor::display_info() const
+{
+    if (!name) return false;
+    cout << "Vendor Name: " << name << endl;
+    describe();  // calls derived class’s describe if overridden
+    return true;
+}
+
+bool Vendor::describe() const
+{
+    // Base behavior: common to all vendors
+    cout << "This vendor offers goods or services specific to its type." << endl;
+    return true;
+}
+
+//-------------------------------------------------------------------------------------------------
+bool TrinketVendor::display_info() const
+{
+    cout << "Trinket Vendor: " << get_name() << endl;
+    describe();
+    return true;
+}
+
+bool TrinketVendor::describe() const
+{
+    cout << "Signature item: ";
+    if (signature_item) cout << signature_item;
+    cout << "." << endl;
+
+    // Recursive display of inventory
+    auto display_inventory_recursive = [this](size_t index, const auto& self) -> void {
+        if (index >= inventory.size()) return;
+        cout << " - " << inventory[index].first << " ($" << inventory[index].second << ")\n";
+        self(index + 1, self);
+    };
+    display_inventory_recursive(0, display_inventory_recursive);
+    return true;
+}
+//--------------------------------------------------------------------------------------------------
+bool CuisineVendor::display_info() const
+{
+    cout << "Cuisine Vendor: " << get_name() << endl;
+    describe();
+    return true;
+}
+
+bool CuisineVendor::describe() const
+{
+    cout << "Menu items: ";
+    
+    auto display_menu_recursive = [this](size_t index, const auto& self) -> void {
+        if (index >= menu.size()) return;
+        cout << menu[index];
+        if (index < menu.size() - 1) cout << ", ";
+        self(index + 1, self);
+    };
+    
+    display_menu_recursive(0, display_menu_recursive);
+    cout << "." << endl;
+    return true;
+}
+//--------------------------------------------------------------------------------------------------
+bool EntertainerVendor::display_info() const
+{
+    cout << "Entertainer: " << get_name() << endl;
+    describe();
+    return true;
+}
+
+bool EntertainerVendor::describe() const
+{
+    cout << "Performs live entertainment with group " << group_name 
+         << " for " << duration << " minutes at " << stage_time << "." << endl;
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+
