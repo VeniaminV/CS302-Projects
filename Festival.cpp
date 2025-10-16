@@ -3,9 +3,8 @@ Veniamin Velikoretskikh veniamin@pdx.edu
 Karla Fant cs302 fall 2025 programing assingment 1. 
 
 This file will contain the implementations for the constructor, copy constructor,
-assignment operator, destructor for the Vendor class and its 3 derived classes. 
-Also the implemintation for the helper functions that are used the functions mentioned
-above. 
+assignment operator, destructor and the needed function in the prototypes,
+ for the Vendor class and its 3 derived classes. 
 */
 
 #include "Festival.h"
