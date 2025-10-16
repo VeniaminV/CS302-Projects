@@ -26,19 +26,19 @@ Festival::Festival(const Festival & source)
 }
 
 //Assignment Operator
-Festival::Festival & operator=(const Festival & source)
+Festival & Festival::operator=(const Festival & source)
 {
 	if(this == &source) return *this;
 
 	//clearing the current data
 	clear_cuisine_list(cuisine_head);
-	clear_entertainer_list(entertainer_tail):
+	clear_entertainer_list(entertainer_tail);
 	trinkets.clear();
 
 	//copying the new data
-	trinkets = sourse.trinkets;   
-	copy_cuisine_list(cuisine_head, source.cousine_head);
-	copy_entertainer_list(entertainer_tail, source.entertainer_tail;
+	trinkets = source.trinkets;   
+	copy_cuisine_list(cuisine_head, source.cuisine_head);
+	copy_entertainer_list(entertainer_tail, source.entertainer_tail);
 
 	return *this;
 }
@@ -74,18 +74,18 @@ bool Festival::add_entertainer(const EntertainerVendor & vendor)
 
 // insert helper functions 
 //----------------------------------------------------------------------------------------
-bool Festival::insert_cuisine_recursive(Node_LLL *& head, const CuisineVendor & vendor);
+bool Festival::insert_cuisine_recursive(Node_LLL *& head, const CuisineVendor & vendor)
 {
 	if (!head)
 	{
 		head = new Node_LLL(vendor);
 		return true;
 	}
-	return insect_cuisine_recursive(head->get_next(), vendor);
+	return insert_cuisine_recursive(head->get_next(), vendor);
 }
 
 
-bool Festival::insert_entertainer_recursive(Node_CLL *& tail, const EntertainerVendor & vendor);
+bool Festival::insert_entertainer_recursive(Node_CLL *& tail, const EntertainerVendor & vendor)
 {
 	if (!tail)
 	{
@@ -94,7 +94,7 @@ bool Festival::insert_entertainer_recursive(Node_CLL *& tail, const EntertainerV
 		return true;
 	}
 
-	Node_CLL * new_node = new Node_Cll(vendor);
+	Node_CLL * new_node = new Node_CLL(vendor);
 	new_node ->set_next(tail->get_next()); //points to the head of the list
 	tail->set_next(new_node);		//links to the old tail to the new node
 	tail = new_node; 			//updates tail pointer

@@ -61,6 +61,9 @@ private:
     bool remove_cuisine_recursive(Node_LLL *& head, const char * name);
     bool remove_entertainer_recursive(Node_CLL *& tail, Node_CLL * current, Node_CLL * prev, const char * name);
 
+    const CuisineVendor * retrieve_cuisine_recursive(Node_LLL * head, const char * name) const;
+    const EntertainerVendor * retrieve_entertainer_recursive(Node_CLL * current, Node_CLL * tail, const char * name) const;
+
 };
 
 
