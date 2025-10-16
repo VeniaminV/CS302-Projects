@@ -37,6 +37,8 @@ public:
 	bool rename_vendor(const char * new_name);	//update vendors name
 	bool describe() const;				//explains what the vendor has to offer
 
+	const char * get_name() const {return name;}
+
 private:
 	char * name;
 

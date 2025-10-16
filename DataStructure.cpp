@@ -6,7 +6,7 @@ for the LLL and CLL
 */
 
 
-#include "LIst.h"
+#include "List.h"
 #include <iostream>
 using namespace std;
 
@@ -21,8 +21,8 @@ Festival::Festival(const Festival & source)
 	:cuisine_head(nullptr), entertainer_tail(nullptr)
 {
 //	trinkets = sourse.trinkets;    //Because it's a vector it will handle its own copy
-	copy_cuisine_list(Cuisine_head, source.cousine_head);
-	copy_entertainer_list(entertainer_tail, source.entertainer_tail;
+	copy_cuisine_list(cuisine_head, source.cuisine_head);
+	copy_entertainer_list(entertainer_tail, source.entertainer_tail);
 }
 
 //Assignment Operator
@@ -68,25 +68,7 @@ bool Festival::add_cuisine_vendor(const CuisineVendor & vendor)
 //Will add a entertainer to a CLL
 bool Festival::add_entertainer(const EntertainerVendor & vendor)
 {
-	return insert_entertainer__recursive(entertainer_tail, vendor);
-}
-
-//Display helpers
-//---------------------------------------------------------------------------------------
-bool Festival::display_cuisine_recursive(Node_LLL * head) const
-{
-	if (!head) return false; 
-	head->get_data().display_info();
-	if (!head ->get_next()) return true;
-	return display_cuisine_recursive(head->get_next());
-} 
-
-bool Festival::display_entertainer_recursive(Node_CLL * current, Node_CLL * tail) const
-{
-	if(!current) return false;
-	current->get_data().display_info();
-	if (current == tail) return true; 
-	return display_entertainer_recursive(current->get_next(), tail);
+	return insert_entertainer_recursive(entertainer_tail, vendor);
 }
 
 
@@ -118,6 +100,55 @@ bool Festival::insert_entertainer_recursive(Node_CLL *& tail, const EntertainerV
 	tail = new_node; 			//updates tail pointer
 	return true;
 }
+
+
+//Display helpers
+//---------------------------------------------------------------------------------------
+bool Festival::display_all() const
+{
+    bool any = false;
+
+    cout << "\n=== Trinket Vendors ===\n";
+    if (display_trinkets_recursive(0))
+        any = true;
+
+    cout << "\n=== Cuisine Vendors ===\n";
+    if (display_cuisine_recursive(cuisine_head))
+        any = true;
+
+    cout << "\n=== Entertainers ===\n";
+    if (entertainer_tail && display_entertainer_recursive(entertainer_tail->get_next(), entertainer_tail))
+        any = true;
+
+    return any;
+}
+
+bool Festival::display_trinkets_recursive(size_t index) const
+{
+    if (index >= trinkets.size())
+        return false; 
+
+    trinkets[index].display_info();
+    bool rest = display_trinkets_recursive(index + 1);
+    return true || rest;  // at least one vendor displayed
+}
+
+bool Festival::display_cuisine_recursive(Node_LLL * head) const
+{
+	if (!head) return false; 
+	head->get_data().display_info();
+	if (!head ->get_next()) return true;
+	return display_cuisine_recursive(head->get_next());
+} 
+
+bool Festival::display_entertainer_recursive(Node_CLL * current, Node_CLL * tail) const
+{
+	if(!current) return false;
+	current->get_data().display_info();
+	if (current == tail) return true; 
+	return display_entertainer_recursive(current->get_next(), tail);
+}
+
 
 
 
@@ -159,7 +190,7 @@ bool Festival::copy_entertainer_list(Node_CLL *& dest, Node_CLL * source)
 		return true;
 	}
 	
-	Node_CLL * new_node = new Node_CLL(Source ->get_next() -> get_data());
+	Node_CLL * new_node = new Node_CLL(source ->get_next() -> get_data());
 	dest->set_next(new_node);
 	
 	return copy_entertainer_list(dest ->get_next(), source->get_next());
@@ -170,7 +201,7 @@ bool Festival::copy_entertainer_list(Node_CLL *& dest, Node_CLL * source)
 //----------------------------------------------------------------------------------------
 bool Festival::clear_cuisine_list(Node_LLL *& head)
 {
-	if (!head) retunr true;
+	if (!head) return true;
 	
 	Node_LLL * temp = head -> get_next();
 	delete head;
@@ -203,3 +234,103 @@ bool Festival::clear_entertainer_list(Node_CLL *& tail)
 	return clear_entertainer_list(tail);
 }
 
+
+
+//Recursive Retrieval
+//-----------------------------------------------------------------------------------------
+// Public wrappers
+const CuisineVendor * Festival::retrieve_cuisine(const char * name) const
+{
+    return retrieve_cuisine_recursive(cuisine_head, name);
+}
+
+const EntertainerVendor * Festival::retrieve_entertainer(const char * name) const
+{
+    if (!entertainer_tail) return nullptr;
+    return retrieve_entertainer_recursive(entertainer_tail->get_next(), entertainer_tail, name);
+}
+
+// Private recursive helpers
+const CuisineVendor * Festival::retrieve_cuisine_recursive(Node_LLL * head, const char * name) const
+{
+    if (!head) return nullptr;
+
+    if (strcmp(head->get_data().get_name(), name) == 0)
+        return &head->get_data();
+
+    return retrieve_cuisine_recursive(head->get_next(), name);
+}
+
+const EntertainerVendor * Festival::retrieve_entertainer_recursive(Node_CLL * current, Node_CLL * tail, const char * name) const
+{
+    if (!current) return nullptr;
+
+    if (strcmp(current->get_data().get_name(), name) == 0)
+        return &current->get_data();
+
+    if (current == tail)
+        return nullptr; // base case for circular list
+
+    return retrieve_entertainer_recursive(current->get_next(), tail, name);
+}
+
+
+
+//Remove vendor by name
+//_________________________________________________________________________________________
+// Public wrappers
+bool Festival::remove_cuisine(const char * name)
+{
+    return remove_cuisine_recursive(cuisine_head, name);
+}
+
+bool Festival::remove_entertainer(const char * name)
+{
+    if (!entertainer_tail) return false;
+    return remove_entertainer_recursive(entertainer_tail, entertainer_tail->get_next(), entertainer_tail, name);
+}
+
+// Private recursive helpers
+
+bool Festival::remove_cuisine_recursive(Node_LLL *& head, const char * name)
+{
+    if (!head) return false;
+
+    if (strcmp(head->get_data().get_name(), name) == 0)
+    {
+        Node_LLL * temp = head;
+        head = head->get_next();
+        delete temp;
+        return true;
+    }
+    return remove_cuisine_recursive(head->get_next(), name);
+}
+
+
+bool Festival::remove_entertainer_recursive(Node_CLL *& tail, Node_CLL * current, Node_CLL * prev, const char * name)
+{
+    if (!current) return false;
+
+    if (strcmp(current->get_data().get_name(), name) == 0)
+    {
+        // only one node in list
+        if (current == tail && current->get_next() == tail)
+        {
+            delete current;
+            tail = nullptr;
+            return true;
+        }
+
+        prev->set_next(current->get_next());
+        if (current == tail)
+            tail = prev;
+
+        delete current;
+        return true;
+    }
+
+    if (current == tail)
+        return false;
+
+    return remove_entertainer_recursive(tail, current->get_next(), current, name);
+}

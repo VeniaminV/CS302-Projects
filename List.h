@@ -22,6 +22,18 @@ public:
     bool add_cuisine_vendor(const CuisineVendor & vendor);
     bool add_entertainer(const EntertainerVendor & vendor);
 
+    bool display_all() const;
+    bool display_cuisine_recursive() const;
+    bool display_entertainer_recursive() const;
+
+    //will return a pointer to an object but it cannot modify it
+    const CuisineVendor * retrieve_cuisine(const char * name) const;
+    const EntertainerVendor * retrieve_entertainer(const char * name) const;
+  
+    //Removal by name
+    bool remove_cuisine(const char * name);
+    bool remove_entertainer(const char * name);
+
 private:
     // Containers
     std::vector<TrinketVendor> trinkets;  // Vector storage
@@ -41,8 +53,13 @@ private:
     bool insert_entertainer_recursive(Node_CLL *& tail, const EntertainerVendor & vendor);
 
     //Display funcitons
+    bool display_trinkets_recursive(size_t index) const;
     bool display_cuisine_recursive(Node_LLL * head) const;
     bool display_entertainer_recursive(Node_CLL * current, Node_CLL * tail) const;
+
+    //recursive removal by name
+    bool remove_cuisine_recursive(Node_LLL *& head, const char * name);
+    bool remove_entertainer_recursive(Node_CLL *& tail, Node_CLL * current, Node_CLL * prev, const char * name);
 
 };
 
