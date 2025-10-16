@@ -31,12 +31,19 @@ private:
     // Helpers for copy & cleanup
     bool copy_cuisine_list(Node_LLL *& dest, Node_LLL * source);
     bool copy_entertainer_list(Node_CLL *& dest, Node_CLL * source);
+
+    //Delete/ release memory
     bool clear_cuisine_list(Node_LLL *& head);
     bool clear_entertainer_list(Node_CLL *& tail);
 
     // Recursive insert helpers
     bool insert_cuisine_recursive(Node_LLL *& head, const CuisineVendor & vendor);
     bool insert_entertainer_recursive(Node_CLL *& tail, const EntertainerVendor & vendor);
+
+    //Display funcitons
+    bool display_cuisine_recursive(Node_LLL * head) const;
+    bool display_entertainer_recursive(Node_CLL * current, Node_CLL * tail) const;
+
 };
 
 

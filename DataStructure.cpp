@@ -20,7 +20,7 @@ Festival::Festival()
 Festival::Festival(const Festival & source)
 	:cuisine_head(nullptr), entertainer_tail(nullptr)
 {
-	trinkets = sourse.trinkets;    //Because it's a vector it will handle its own copy
+//	trinkets = sourse.trinkets;    //Because it's a vector it will handle its own copy
 	copy_cuisine_list(Cuisine_head, source.cousine_head);
 	copy_entertainer_list(entertainer_tail, source.entertainer_tail;
 }
@@ -37,7 +37,7 @@ Festival::Festival & operator=(const Festival & source)
 
 	//copying the new data
 	trinkets = sourse.trinkets;   
-	copy_cuisine_list(Cuisine_head, source.cousine_head);
+	copy_cuisine_list(cuisine_head, source.cousine_head);
 	copy_entertainer_list(entertainer_tail, source.entertainer_tail;
 
 	return *this;
@@ -50,7 +50,8 @@ Festival::~Festival()
 	clear_entertainer_list(entertainer_tail);
 }
 
-
+//functions that add vendors
+//----------------------------------------------------------------------------------------
 //This function will add a trinket vendor to a vector
 bool Festival::add_trinket_vendor(const TrinketVendor & vendor)
 {
@@ -70,7 +71,27 @@ bool Festival::add_entertainer(const EntertainerVendor & vendor)
 	return insert_entertainer__recursive(entertainer_tail, vendor);
 }
 
-// Helpers for copy & cleanup
+//Display helpers
+//---------------------------------------------------------------------------------------
+bool Festival::display_cuisine_recursive(Node_LLL * head) const
+{
+	if (!head) return false; 
+	head->get_data().display_info();
+	if (!head ->get_next()) return true;
+	return display_cuisine_recursive(head->get_next());
+} 
+
+bool Festival::display_entertainer_recursive(Node_CLL * current, Node_CLL * tail) const
+{
+	if(!current) return false;
+	current->get_data().display_info();
+	if (current == tail) return true; 
+	return display_entertainer_recursive(current->get_next(), tail);
+}
+
+
+// insert helper functions 
+//----------------------------------------------------------------------------------------
 bool Festival::insert_cuisine_recursive(Node_LLL *& head, const CuisineVendor & vendor);
 {
 	if (!head)
@@ -101,6 +122,7 @@ bool Festival::insert_entertainer_recursive(Node_CLL *& tail, const EntertainerV
 
 
 //Copy helper functions 
+//----------------------------------------------------------------------------------------
 bool Festival::copy_cuisine_list(Node_LLL *& dest, Node_LLL * source)
 {
 	if (!source)
@@ -145,6 +167,7 @@ bool Festival::copy_entertainer_list(Node_CLL *& dest, Node_CLL * source)
 
 
 //Helpers to delete/ release the memory
+//----------------------------------------------------------------------------------------
 bool Festival::clear_cuisine_list(Node_LLL *& head)
 {
 	if (!head) retunr true;
