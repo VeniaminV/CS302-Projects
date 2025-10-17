@@ -122,31 +122,56 @@ bool Festival::display_all() const
 
     return any;
 }
-
 bool Festival::display_trinkets_recursive(size_t index) const
 {
     if (index >= trinkets.size())
-        return false; 
+        return true;
 
-    trinkets[index].display_info();
-    bool rest = display_trinkets_recursive(index + 1);
-    return true || rest;  // at least one vendor displayed
+    const TrinketVendor & vendor = trinkets[index];
+    cout << "\nTrinket Vendor: " << vendor.get_name() << endl;
+
+    // Show signature item if available
+    if (vendor.signature_item)
+        cout << "Signature Item: " << vendor.signature_item << endl;
+
+    // Display items in inventory
+    const vector<pair<string, float>> & items = vendor.inventory;
+    display_inventory_recursive(items, 0);
+
+    return display_trinkets_recursive(index + 1);
 }
+
 
 bool Festival::display_cuisine_recursive(Node_LLL * head) const
 {
-	if (!head) return false; 
-	head->get_data().display_info();
-	if (!head ->get_next()) return true;
-	return display_cuisine_recursive(head->get_next());
+    if (!head)
+        return true;
+
+    const CuisineVendor & vendor = head->get_data();
+    cout << "\nCuisine Vendor: " << vendor.get_name() << endl;
+
+    // Display menu items
+    const vector<string> & menu = vendor.menu;
+    display_menu_recursive(menu, 0);
+
+    return display_cuisine_recursive(head->get_next());
 } 
 
 bool Festival::display_entertainer_recursive(Node_CLL * current, Node_CLL * tail) const
 {
-	if(!current) return false;
-	current->get_data().display_info();
-	if (current == tail) return true; 
-	return display_entertainer_recursive(current->get_next(), tail);
+    if (!current)
+        return false;
+
+    const EntertainerVendor & vendor = current->get_data();
+    cout << "\nEntertainer: " << vendor.get_name() << endl;
+    cout << "  Group: " << vendor.group_name << endl;
+    cout << "  Duration: " << vendor.duration << " mins" << endl;
+    cout << "  Stage Time: " << vendor.stage_time << endl;
+
+    if (current == tail)
+        return true;
+
+    return display_entertainer_recursive(current->get_next(), tail);
 }
 
 

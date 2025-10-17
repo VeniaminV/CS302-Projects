@@ -23,8 +23,8 @@ public:
     bool add_entertainer(const EntertainerVendor & vendor);
 
     bool display_all() const;
-    bool display_cuisine_recursive() const;
-    bool display_entertainer_recursive() const;
+//    bool display_cuisine_recursive() const;
+ //   bool display_entertainer_recursive() const;
 
     //will return a pointer to an object but it cannot modify it
     const CuisineVendor * retrieve_cuisine(const char * name) const;
