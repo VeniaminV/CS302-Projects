@@ -3,9 +3,6 @@
 
 // Main menu interface for Festival program
 
-// Veniamin Velikoretskikh  veniamin@pdx.edu
-// Karla Fant CS302 Fall 2025
-// Main menu interface for Festival program
 #include "List.h"
 #include <iostream>
 #include <string>
@@ -23,11 +20,10 @@ void display_menu()
     cout << "6. Retrieve Entertainer Vendor\n";
     cout << "7. Remove Cuisine Vendor\n";
     cout << "8. Remove Entertainer Vendor\n";
-    cout << "9. Sell Trinket Item\n";
     cout << "10. Take Cuisine Order\n";
     cout << "11. Recommend Cuisine Item\n";
     cout << "12. Reschedule Entertainer\n";
-    cout << "13. Rename Vendor\n";
+//    cout << "13. Rename Vendor\n";
     cout << "0. Exit\n";
     cout << "Enter your choice: ";
 }
@@ -111,9 +107,7 @@ int main()
                 string name;
                 cout << "Enter the Entertainer name to retrieve: ";
                 getline(cin, name);
-		EntertainerVendor *ev = const_cast<EntertainerVendor*>(fest.retrieve_entertainer(vendorName.c_str()));
-
-               // const EntertainerVendor *ev = fest.retrieve_entertainer(name.c_str());
+                const EntertainerVendor *ev = fest.retrieve_entertainer(name.c_str());
                 if (!ev || !ev->announce())
                     cout << "Entertainer not found.\n";
                 break;
@@ -138,21 +132,6 @@ int main()
                     cout << "Entertainer removed.\n";
                 else
                     cout << "Entertainer not found.\n";
-                break;
-            }
-
-            case 9: {  // Sell Trinket Item
-                string vendorName, item;
-                cout << "Enter Trinket Vendor name: ";
-                getline(cin, vendorName);
-                cout << "Enter item to sell: ";
-                getline(cin, item);
-
-                TrinketVendor *tv = fest.retrieve_trinket(vendorName.c_str());
-                if (tv)
-                    tv->sell_item(item);
-                else
-                    cout << "Trinket vendor not found.\n";
                 break;
             }
 
@@ -191,7 +170,7 @@ int main()
                 cout << "Enter new stage time: ";
                 getline(cin, newTime);
 
-                EntertainerVendor *ev = fest.retrieve_entertainer(vendorName.c_str());
+                EntertainerVendor *ev = const_cast<EntertainerVendor*>(fest.retrieve_entertainer(vendorName.c_str()));
                 if (ev)
                     ev->reschedule(newTime);
                 else
@@ -199,17 +178,18 @@ int main()
                 break;
             }
 
-            case 13: {  // Rename Vendor
+            /*case 13: {  // Rename Vendor
                 string oldName, newName;
                 cout << "Enter current Vendor name: ";
                 getline(cin, oldName);
                 cout << "Enter new Vendor name: ";
                 getline(cin, newName);
 
+                // Implement rename_vendor in Festival if needed
                 if (!fest.rename_vendor(oldName.c_str(), newName.c_str()))
                     cout << "Vendor not found.\n";
                 break;
-            }
+            }*/
 
             case 0:
                 cout << "Exiting program. Goodbye!\n";

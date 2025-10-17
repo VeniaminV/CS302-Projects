@@ -98,7 +98,9 @@ public:
  	bool recommend_item() const;
 	bool restock_item(const string & food);
 
-	 const vector<string>& get_menu() const { return menu; }
+	const vector<string>& get_menu() const { return menu; }
+
+	bool rename_vendor(const char* oldName, const char* newName);
 
 //	bool display_info() const;
  //   	bool describe() const;
@@ -106,6 +108,8 @@ public:
 private:
 	vector<string> menu;
 	bool take_order_recursive(const string & food, size_t index) const;
+
+//	 bool rename_cuisine_recursive(Node_LLL* node, const char* oldName, const char* newName);
 };
 
 
