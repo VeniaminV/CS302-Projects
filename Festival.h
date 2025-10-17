@@ -63,6 +63,9 @@ public:
 	bool list_item() const;
 	bool sell_item(const string & itemName);
 
+	const char* get_signature() const { return signature_item; }
+        const vector<pair<string, float>>& get_inventory() const { return inventory; }
+
 // 	bool display_info() const;            
  //   	bool describe() const;    
 	
@@ -92,6 +95,8 @@ public:
  	bool recommend_item() const;
 	bool restock_item(const string & food);
 
+	 const vector<string>& get_menu() const { return menu; }
+
 //	bool display_info() const;
  //   	bool describe() const;
 	
@@ -116,6 +121,10 @@ public:
 	bool announce() const;
 	bool perform_and_remove(EntertainerVendor *& tail);
 	bool reschedule(const string & newTime);
+
+	const string& get_group_name() const { return group_name; }
+    	int get_duration() const { return duration; }
+        const string& get_stage_time() const { return stage_time; }
 
  //	bool display_info() const;
    // 	bool describe() const;

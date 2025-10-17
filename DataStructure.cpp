@@ -130,13 +130,12 @@ bool Festival::display_trinkets_recursive(size_t index) const
     const TrinketVendor & vendor = trinkets[index];
     cout << "\nTrinket Vendor: " << vendor.get_name() << endl;
 
-    // Show signature item if available
-    if (vendor.signature_item)
-        cout << "Signature Item: " << vendor.signature_item << endl;
+    if (vendor.get_signature())
+        cout << "Signature Item: " << vendor.get_signature() << endl;
 
-    // Display items in inventory
-    const vector<pair<string, float>> & items = vendor.inventory;
-    display_inventory_recursive(items, 0);
+    const vector<pair<string, float>> & items = vendor.get_inventory();
+    for (size_t i = 0; i < items.size(); ++i)
+        cout << " - " << items[i].first << " ($" << items[i].second << ")\n";
 
     return display_trinkets_recursive(index + 1);
 }
@@ -150,9 +149,9 @@ bool Festival::display_cuisine_recursive(Node_LLL * head) const
     const CuisineVendor & vendor = head->get_data();
     cout << "\nCuisine Vendor: " << vendor.get_name() << endl;
 
-    // Display menu items
-    const vector<string> & menu = vendor.menu;
-    display_menu_recursive(menu, 0);
+    const vector<string> & menu = vendor.get_menu();
+    for (size_t i = 0; i < menu.size(); ++i)
+        cout << " - " << menu[i] << endl;
 
     return display_cuisine_recursive(head->get_next());
 } 
@@ -164,9 +163,9 @@ bool Festival::display_entertainer_recursive(Node_CLL * current, Node_CLL * tail
 
     const EntertainerVendor & vendor = current->get_data();
     cout << "\nEntertainer: " << vendor.get_name() << endl;
-    cout << "  Group: " << vendor.group_name << endl;
-    cout << "  Duration: " << vendor.duration << " mins" << endl;
-    cout << "  Stage Time: " << vendor.stage_time << endl;
+    cout << "  Group: " << vendor.get_group_name() << endl;
+    cout << "  Duration: " << vendor.get_duration() << " mins" << endl;
+    cout << "  Stage Time: " << vendor.get_stage_time() << endl;
 
     if (current == tail)
         return true;
