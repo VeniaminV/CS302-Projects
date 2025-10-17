@@ -66,6 +66,8 @@ public:
 	const char* get_signature() const { return signature_item; }
         const vector<pair<string, float>>& get_inventory() const { return inventory; }
 
+	TrinketVendor* retrieve_trinket(const char * name);
+
 // 	bool display_info() const;            
  //   	bool describe() const;    
 	
