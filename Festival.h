@@ -79,6 +79,7 @@ private:
 	bool set_signature(const char* s);		//sets the signature item 
 	bool clear_signature();
 
+
 };
 
 

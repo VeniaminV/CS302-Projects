@@ -111,7 +111,7 @@ int main()
                 string name;
                 cout << "Enter the Entertainer name to retrieve: ";
                 getline(cin, name);
-                EntertainerVendor *ev = fest.retrieve_entertainer(name.c_str());
+                const EntertainerVendor *ev = fest.retrieve_entertainer(name.c_str());
                 if (!ev || !ev->announce())
                     cout << "Entertainer not found.\n";
                 break;
