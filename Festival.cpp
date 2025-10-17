@@ -141,15 +141,6 @@ bool TrinketVendor::sell_item_recursive(const string & itemName, size_t index)
 }
 
 
-TrinketVendor* Festival::retrieve_trinket(const char* name)
-{
-    for (size_t i = 0; i < trinkets.size(); ++i)
-    {
-        if (strcmp(trinkets[i].get_name(), name) == 0)
-            return &trinkets[i];
-    }
-    return nullptr;
-}
 
 // CuisineVendor
 //------------------------------------------------------------------------------------------------
