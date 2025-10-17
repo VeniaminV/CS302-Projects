@@ -33,9 +33,9 @@ public:
 	Vendor & operator = (const Vendor & src); //assignment operator
 	~Vendor(); 			//destructor
 
-	bool display_info() const;				//show vendors info
+//	bool display_info() const;				//show vendors info
 	bool rename_vendor(const char * new_name);	//update vendors name
-	bool describe() const;				//explains what the vendor has to offer
+//	bool describe() const;				//explains what the vendor has to offer
 
 	const char * get_name() const {return name;}
 
@@ -96,7 +96,7 @@ public:
  //   	bool describe() const;
 	
 private:
-//	vector<string> menu;
+	vector<string> menu;
 	bool take_order_recursive(const string & food, size_t index) const;
 };
 

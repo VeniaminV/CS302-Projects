@@ -251,13 +251,11 @@ bool CuisineVendor::restock_recursive(Node_LLL * & head, Node_LLL * new_node)
 // EntertainerVendor
 //-----------------------------------------------------------------------------------------------
 EntertainerVendor::EntertainerVendor(const char * name, const string & group, int dur, const string & stageTime)
-    : Vendor(name), next(nullptr), group_name(group), duration(dur), stage_time(stageTime)
+    : Vendor(name), group_name(group), duration(dur), stage_time(stageTime)
 {}
 
 EntertainerVendor::~EntertainerVendor()
-{
-    next = nullptr; 
-}
+{}
 
 
 
