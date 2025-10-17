@@ -119,7 +119,7 @@ public:
 
 
 	bool announce() const;
-	bool perform_and_remove(EntertainerVendor *& tail);
+//	bool perform_and_remove(EntertainerVendor *& tail);
 	bool reschedule(const string & newTime);
 
 	const string& get_group_name() const { return group_name; }

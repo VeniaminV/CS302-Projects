@@ -151,6 +151,64 @@ CuisineVendor::CuisineVendor(const char * name, const vector<string> & items)
 CuisineVendor::~CuisineVendor()
 {}
 
+bool CuisineVendor::show_menu() const
+{
+    if (menu.empty()) 
+    {
+        cout << "No menu items available." << endl;
+        return false;
+    }
+
+    cout << "Menu for " << get_name() << ":" << endl;
+    for (size_t i = 0; i < menu.size(); ++i)
+        cout << " - " << menu[i] << endl;
+
+    return true;
+}
+
+// Take an order recursively
+bool CuisineVendor::take_order(const string & food) const
+{
+    return take_order_recursive(food, 0);
+}
+
+bool CuisineVendor::take_order_recursive(const string & food, size_t index) const
+{
+    if (index >= menu.size())
+    {
+        cout << "Sorry, " << food << " is not on the menu." << endl;
+        return false;
+    }
+
+    if (menu[index] == food)
+    {
+        cout << "Order placed for " << food << "!" << endl;
+        return true;
+    }
+
+    return take_order_recursive(food, index + 1);
+}
+
+// Recommend the first item on the menu
+bool CuisineVendor::recommend_item() const
+{
+    if (menu.empty())
+    {
+        cout << "No items to recommend." << endl;
+        return false;
+    }
+
+    cout << "Chef recommends: " << menu[0] << endl;
+    return true;
+}
+
+// Restock (add) a menu item recursively
+bool CuisineVendor::restock_item(const string & food)
+{
+    menu.push_back(food);
+    cout << "Restocked: " << food << endl;
+    return true;
+}
 /*
 // Recursively delete all nodes
 void CuisineVendor::delete_all(Node_LLL * & head)
@@ -253,11 +311,48 @@ bool CuisineVendor::restock_recursive(Node_LLL * & head, Node_LLL * new_node)
 EntertainerVendor::EntertainerVendor(const char * name, const string & group, int dur, const string & stageTime)
     : Vendor(name), group_name(group), duration(dur), stage_time(stageTime)
 {}
-
 EntertainerVendor::~EntertainerVendor()
 {}
 
+// Announce performance
+// Announce the entertainer's performance
+bool EntertainerVendor::announce() const
+{
+    cout << "Attention! " << get_name()
+         << " from group " << group_name
+         << " will perform for " << duration
+         << " minutes at " << stage_time << "." << endl;
+    return true;
+}
 
+// Reschedule the entertainer's stage time
+bool EntertainerVendor::reschedule(const string & newTime)
+{
+    stage_time = newTime;
+    cout << get_name() << "'s performance has been rescheduled to " << stage_time << "." << endl;
+    return true;
+}
+// Remove self from CLL
+/*bool EntertainerVendor::perform_and_remove(EntertainerVendor *& tail)
+{
+    if (!tail) return false;
+
+    Node_CLL * head = tail->get_next();
+
+    if (head == tail) // only one entertainer
+    {
+        delete head;
+        tail = nullptr;
+        return true;
+    }
+
+    Node_CLL * to_remove = head;
+    tail->set_next(head->get_next());
+    delete to_remove;
+    return true;
+}
+
+*/
 
 
 
