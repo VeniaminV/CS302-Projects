@@ -43,6 +43,7 @@ public:
 					//because pointers are private and to maintain encapsulation
 
     Node_CLL *& get_next() { return next; } 	//gives access to this node's next pointer
+    const Node_CLL * get_next() const { return next; }
 
     EntertainerVendor & get_data() { return data; }	//gives the data stored inside the node
     const EntertainerVendor & get_data() const { return data; } //for functions that don't need to modify the data

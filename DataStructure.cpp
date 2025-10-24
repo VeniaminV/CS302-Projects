@@ -25,7 +25,8 @@ Festival::Festival(const Festival & source)
 //	trinkets = sourse.trinkets;    //Because it's a vector it will handle its own copy
 	copy_cuisine_list(cuisine_head, source.cuisine_head);
 //	copy_entertainer_list(Node_CLL * source, Node_CLL *& dest);
-	copy_entertainer_list(entertainer_tail, source.entertainer_tail);
+//	copy_entertainer_list(entertainer_tail, source.entertainer_tail);
+	copy_entertainer_list(source.entertainer_tail, entertainer_tail);
 }
 
 //Assignment Operator
@@ -41,7 +42,8 @@ Festival & Festival::operator=(const Festival & source)
 	//copying the new data
 	trinkets = source.trinkets;   
 	copy_cuisine_list(cuisine_head, source.cuisine_head);
-	copy_entertainer_list(entertainer_tail, source.entertainer_tail);
+//	copy_entertainer_list(entertainer_tail, source.entertainer_tail);
+	copy_entertainer_list(source.entertainer_tail, entertainer_tail);
 
 	return *this;
 }
@@ -253,7 +255,7 @@ bool Festival::copy_entertainer_list(Node_CLL *& dest, Node_CLL * source)
 }
 */
 
-bool Festival::copy_entertainer_list(Node_CLL * source, Node_CLL *& dest)
+bool Festival::copy_entertainer_list(const Node_CLL * source, Node_CLL *& dest)
 {
     if (!source) {
         dest = nullptr;
@@ -265,7 +267,7 @@ bool Festival::copy_entertainer_list(Node_CLL * source, Node_CLL *& dest)
     return copy_entertainer_recursive(source->get_next(), source, dest_head, dest_tail);
 }
 
-bool Festival::copy_entertainer_recursive(Node_CLL * current, Node_CLL * source_tail,
+bool Festival::copy_entertainer_recursive(const Node_CLL * current, const Node_CLL * source_tail,
                                            Node_CLL * dest_head, Node_CLL *& dest_tail)
 {
     if (current == source_tail) {
