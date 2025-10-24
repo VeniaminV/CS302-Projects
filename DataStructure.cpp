@@ -8,6 +8,8 @@ for the LLL and CLL
 
 #include "List.h"
 #include <iostream>
+
+#include <cstring>
 using namespace std;
 
 //Festival class
@@ -22,6 +24,7 @@ Festival::Festival(const Festival & source)
 {
 //	trinkets = sourse.trinkets;    //Because it's a vector it will handle its own copy
 	copy_cuisine_list(cuisine_head, source.cuisine_head);
+//	copy_entertainer_list(Node_CLL * source, Node_CLL *& dest);
 	copy_entertainer_list(entertainer_tail, source.entertainer_tail);
 }
 
@@ -68,6 +71,7 @@ bool Festival::add_cuisine_vendor(const CuisineVendor & vendor)
 //Will add a entertainer to a CLL
 bool Festival::add_entertainer(const EntertainerVendor & vendor)
 {
+
 	return insert_entertainer_recursive(entertainer_tail, vendor);
 }
 
@@ -85,6 +89,32 @@ bool Festival::insert_cuisine_recursive(Node_LLL *& head, const CuisineVendor & 
 }
 
 
+bool Festival::insert_entertainer_recursive(Node_CLL *& tail, const EntertainerVendor & new_vendor)
+{
+    if (!tail) {
+        tail = new Node_CLL(new_vendor);
+        tail->set_next(tail);  // single node ring
+        return true;
+    }
+
+    // Recursive helper
+    return insert_entertainer_helper(tail->get_next(), tail, new_vendor);
+}
+
+
+bool Festival::insert_entertainer_helper(Node_CLL * current, Node_CLL * tail, const EntertainerVendor & new_vendor)
+{
+    // base case: we came full circle, insert before tail->get_next()
+    if (current == tail) {
+        Node_CLL * temp = new Node_CLL(new_vendor);
+        temp->set_next(tail->get_next());
+        tail->set_next(temp);
+        tail = temp;  // new tail
+        return true;
+    }
+    return insert_entertainer_helper(current->get_next(), tail, new_vendor);
+}
+/*
 bool Festival::insert_entertainer_recursive(Node_CLL *& tail, const EntertainerVendor & vendor)
 {
 	if (!tail)
@@ -100,6 +130,8 @@ bool Festival::insert_entertainer_recursive(Node_CLL *& tail, const EntertainerV
 	tail = new_node; 			//updates tail pointer
 	return true;
 }
+*/
+
 
 
 //Display helpers
@@ -189,7 +221,7 @@ bool Festival::copy_cuisine_list(Node_LLL *& dest, Node_LLL * source)
 	return copy_cuisine_list(dest->get_next(), source ->get_next());
 }
 
-
+/*
 bool Festival::copy_entertainer_list(Node_CLL *& dest, Node_CLL * source)
 {
 	if (!source)
@@ -218,6 +250,33 @@ bool Festival::copy_entertainer_list(Node_CLL *& dest, Node_CLL * source)
 	dest->set_next(new_node);
 	
 	return copy_entertainer_list(dest ->get_next(), source->get_next());
+}
+*/
+
+bool Festival::copy_entertainer_list(Node_CLL * source, Node_CLL *& dest)
+{
+    if (!source) {
+        dest = nullptr;
+        return true;
+    }
+
+    Node_CLL * dest_head = new Node_CLL(source->get_data());
+    Node_CLL * dest_tail = dest_head;
+    return copy_entertainer_recursive(source->get_next(), source, dest_head, dest_tail);
+}
+
+bool Festival::copy_entertainer_recursive(Node_CLL * current, Node_CLL * source_tail,
+                                           Node_CLL * dest_head, Node_CLL *& dest_tail)
+{
+    if (current == source_tail) {
+        dest_tail->set_next(dest_head);  // close ring
+        return true;
+    }
+
+    Node_CLL * new_node = new Node_CLL(current->get_data());
+    dest_tail->set_next(new_node);
+    dest_tail = new_node;
+    return copy_entertainer_recursive(current->get_next(), source_tail, dest_head, dest_tail);
 }
 
 

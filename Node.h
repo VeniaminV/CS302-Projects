@@ -5,9 +5,7 @@ CS302 Fall 2025 - Oktoberfest Program
 This file will include the Nodes for  the data structures
 
 */
-
-#include "Festival.h" 
-
+#include "Festival.h"
 
 // Node for CuisineVendor LLL
 class Node_LLL

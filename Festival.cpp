@@ -36,6 +36,12 @@ Vendor::~Vendor()
 {
     clear_name();
 }
+bool Vendor::rename_vendor(const char * new_name)
+{
+    if (!new_name) return false;
+    clear_name();             
+    return set_name(new_name);
+}
 
 // Private helpers
 //Safely updates vendors name, because it's dynamically allocated. 
@@ -145,7 +151,7 @@ bool TrinketVendor::sell_item_recursive(const string & itemName, size_t index)
 // CuisineVendor
 //------------------------------------------------------------------------------------------------
 CuisineVendor::CuisineVendor(const char * name, const vector<string> & items)
-    : Vendor(name)//, menu(items)
+    : Vendor(name), menu(items)
 {}
 
 CuisineVendor::~CuisineVendor()

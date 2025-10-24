@@ -22,6 +22,8 @@ class TrinketVendor;
 class CuisineVendor;
 class EntertainerVendor;
 
+class Node_LLL;
+class Node_CLL;
 
 
 //---------------------------------------------------------------------------------------------
