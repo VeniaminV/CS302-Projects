@@ -420,11 +420,11 @@ bool Festival::remove_entertainer_recursive(Node_CLL *& tail, Node_CLL * current
     return remove_entertainer_recursive(tail, current->get_next(), current, name);
 }
 
-
+/*
 //Rename fucnunction
 //_____________________________________________________________________________________________
 bool Festival::rename_vendor(const char * old_name, const char * new_name)
-{
+
     if (!old_name || !new_name) return false;
     bool renamed = false;
 
@@ -445,8 +445,6 @@ bool Festival::rename_vendor(const char * old_name, const char * new_name)
 
     return false; // nothing found
 }
-
-
 
 
 bool Festival::rename_cuisine_recursive(Node_LLL * current, const char * old_name, const char * new_name)
@@ -489,4 +487,5 @@ bool Vendor::rename_vendor(const char * new_name)
     set_name(new_name);
     return true;
 }
+*/
 

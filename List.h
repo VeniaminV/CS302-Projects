@@ -35,7 +35,7 @@ public:
     bool remove_entertainer(const char * name);
 
     //Rename functions
-    bool rename_vendor(const char * old_name, const char * new_name);
+//    bool rename_vendor(const char * old_name, const char * new_name);
 
 
 private:
@@ -73,9 +73,10 @@ private:
     EntertainerVendor * retrieve_entertainer_recursive(Node_CLL * current, Node_CLL * tail, const char * name);
 
     //Rename helpers
-    bool rename_cuisine_recursive(Node_LLL * current, const char * old_name, const char * new_name);
-    bool rename_entertainer_recursive(Node_CLL * current, Node_CLL * tail, const char * old_name, const char * new_name);
+ //   bool rename_cuisine_recursive(Node_LLL * current, const char * old_name, const char * new_name);
+//    bool rename_entertainer_recursive(Node_CLL * current, Node_CLL * tail, const char * old_name, const char * new_name);
 
 };
+
 
 
