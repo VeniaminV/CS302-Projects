@@ -329,7 +329,7 @@ const CuisineVendor * Festival::retrieve_cuisine(const char * name) const
     return retrieve_cuisine_recursive(cuisine_head, name);
 }
 
-const EntertainerVendor * Festival::retrieve_entertainer(const char * name) const
+EntertainerVendor * Festival::retrieve_entertainer(const char * name)
 {
     if (!entertainer_tail) return nullptr;
     return retrieve_entertainer_recursive(entertainer_tail->get_next(), entertainer_tail, name);
@@ -346,7 +346,7 @@ const CuisineVendor * Festival::retrieve_cuisine_recursive(Node_LLL * head, cons
     return retrieve_cuisine_recursive(head->get_next(), name);
 }
 
-const EntertainerVendor * Festival::retrieve_entertainer_recursive(Node_CLL * current, Node_CLL * tail, const char * name) const
+EntertainerVendor * Festival::retrieve_entertainer_recursive(Node_CLL * current, Node_CLL * tail, const char * name)
 {
     if (!current) return nullptr;
 
@@ -419,3 +419,74 @@ bool Festival::remove_entertainer_recursive(Node_CLL *& tail, Node_CLL * current
 
     return remove_entertainer_recursive(tail, current->get_next(), current, name);
 }
+
+
+//Rename fucnunction
+//_____________________________________________________________________________________________
+bool Festival::rename_vendor(const char * old_name, const char * new_name)
+{
+    if (!old_name || !new_name) return false;
+    bool renamed = false;
+
+    // Try Cuisine Vendors (LLL)
+    renamed = rename_cuisine_recursive(cuisine_head, old_name, new_name);
+    if (renamed) return true;
+
+    // Try Entertainers (CLL)
+    if (entertainer_tail)
+        renamed = rename_entertainer_recursive(entertainer_tail->get_next(), entertainer_tail, old_name, new_name);
+    if (renamed) return true;
+
+    // Try Trinket Vendors
+    if (trinket_vendor && strcmp(trinket_vendor->get_name(), old_name) == 0) {
+        trinket_vendor->rename_vendor(new_name);
+        return true;
+    }
+
+    return false; // nothing found
+}
+
+
+
+
+bool Festival::rename_cuisine_recursive(Node_LLL * current, const char * old_name, const char * new_name)
+{
+    if (!current) return false;
+
+    CuisineVendor & vendor = current->get_data();
+    if (strcmp(vendor.get_name(), old_name) == 0) {
+        vendor.rename_vendor(new_name);
+        return true;
+    }
+    return rename_cuisine_recursive(current->get_next(), old_name, new_name);
+}
+
+
+
+bool Festival::rename_entertainer_recursive(Node_CLL * current, Node_CLL * tail, const char * old_name, const char * new_name)
+{
+    if (!current) return false;
+
+    EntertainerVendor & vendor = current->get_data();
+    if (strcmp(vendor.get_name(), old_name) == 0) {
+        vendor.rename_vendor(new_name);
+        return true;
+    }
+
+    // Base case: stop after we’ve looped around the ring
+    if (current == tail)
+        return false;
+
+    return rename_entertainer_recursive(current->get_next(), tail, old_name, new_name);
+}
+
+
+bool Vendor::rename_vendor(const char * new_name)
+{
+    if (!new_name || !*new_name) return false;
+
+    clear_name();
+    set_name(new_name);
+    return true;
+}
+

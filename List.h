@@ -28,11 +28,15 @@ public:
 
     //will return a pointer to an object but it cannot modify it
     const CuisineVendor * retrieve_cuisine(const char * name) const;
-    const EntertainerVendor * retrieve_entertainer(const char * name) const;
+    EntertainerVendor * retrieve_entertainer(const char * name);
   
     //Removal by name
     bool remove_cuisine(const char * name);
     bool remove_entertainer(const char * name);
+
+    //Rename functions
+    bool rename_vendor(const char * old_name, const char * new_name);
+
 
 private:
     // Containers
@@ -66,7 +70,11 @@ private:
     bool remove_entertainer_recursive(Node_CLL *& tail, Node_CLL * current, Node_CLL * prev, const char * name);
 
     const CuisineVendor * retrieve_cuisine_recursive(Node_LLL * head, const char * name) const;
-    const EntertainerVendor * retrieve_entertainer_recursive(Node_CLL * current, Node_CLL * tail, const char * name) const;
+    EntertainerVendor * retrieve_entertainer_recursive(Node_CLL * current, Node_CLL * tail, const char * name);
+
+    //Rename helpers
+    bool rename_cuisine_recursive(Node_LLL * current, const char * old_name, const char * new_name);
+    bool rename_entertainer_recursive(Node_CLL * current, Node_CLL * tail, const char * old_name, const char * new_name);
 
 };
 
