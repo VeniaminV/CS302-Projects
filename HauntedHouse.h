@@ -32,6 +32,7 @@ public:
     bool remove_teen(const char * name);
     bool remove_adult(const char * name);
 
+
 private:
     Node_DLL<KidObstacle> * kid_head;       // DLL head for kid obstacles
     Node_DLL<TeenObstacle> * teen_head;     // DLL head for teen obstacles

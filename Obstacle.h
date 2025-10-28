@@ -5,15 +5,6 @@
 /*
 This file contains the class prototypes for the Obstacle base class,
 its three derived classes (KidObstacle, TeenObstacle, AdultObstacle),
-*/
-
-/*
-Veniamin Velikoreskikh  veniamin@pdx.edu
-CS302 Fall 2025 - Program 2: Haunted House Maze
-Karla Fant
-
-This file contains the class prototypes for the Obstacle base class,
-its three derived classes (KidObstacle, TeenObstacle, AdultObstacle),
 and the HauntedHouse class that manages the game’s data structures.
 All obstacle levels are now stored in doubly linked lists (DLL).
 */
@@ -59,12 +50,13 @@ public:
     //add movement effects
     Obstacle operator+(const Obstacle& rhs) const;  
     Obstacle& operator+=(const Obstacle& rhs);      
-
+    Obstacle operator-(const Obstacle& rhs) const;
+    Obstacle& operator-=(const Obstacle& rhs);
 
     friend ostream & operator<<(ostream & out, const Obstacle & src); // Print obstacle
     friend istream & operator>>(istream & in, Obstacle & src);        // Read obstacle
 
-private:
+protected:
     char * name;               // Dynamically allocated name
     string secret_message;     // Message shown to player when triggered
     int movement_effect;       // Number of steps to move forward/backward
@@ -77,7 +69,7 @@ private:
 
 //---------------------------------------------------------------------------------------------
 // KidObstacle 
-class KidObstacle : public Obstacl
+class KidObstacle : public Obstacle
 {
 public:
     KidObstacle(); // Default constructor
