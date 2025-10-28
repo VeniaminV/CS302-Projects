@@ -9,134 +9,122 @@ and the HauntedHouse class that manages the game’s data structures.
 All obstacle levels are now stored in doubly linked lists (DLL).
 */
 
-#include <cstring>
-#include <cctype>
+
 #include <iostream>
-#include <fstream>
+#include <cstring>
 #include <string>
-#include <vector>
-#include <utility>
 
 using namespace std;
 
-class KidObstacle;
-class TeenObstacle;
-class AdultObstacle;
+//------------------ Base Class: Obstacle ------------------
 
-
-
-// Base class for all obstacles
 class Obstacle
 {
 public:
-    Obstacle();                                         // Default constructor
-    Obstacle(const char * name, const string & msg, int move); // Constructor
-    Obstacle(const Obstacle & src);                     // Copy constructor
-    Obstacle & operator=(const Obstacle & src);         // Assignment operator
-    ~Obstacle();                                        // Destructor
+    Obstacle();
+    Obstacle(const char * name, const string & msg, int move);
+    Obstacle(const Obstacle & op2);
+    Obstacle & operator=(const Obstacle & op2);
+    ~Obstacle();
 
-    int display_info() const;                          // Show info about the obstacle
-    bool trigger_event();                               // Apply obstacle effect (move forward/backward)
-    const char * get_name() const { return name; }     // Getter for obstacle name
+    int display_info() const;
+    int trigger_event() const;
+
+    const char * get_name() const { return name; }
 
     // Operator overloads
-    bool operator==(const Obstacle& rhs) const;   // equality
-    bool operator!=(const Obstacle& rhs) const;   // inequality
-    bool operator<(const Obstacle& rhs) const;    // less than
-    bool operator<=(const Obstacle& rhs) const;   // less than or equal
-    bool operator>(const Obstacle& rhs) const;    // greater than
-    bool operator>=(const Obstacle& rhs) const;   // greater than or equal
+    bool operator==(const Obstacle & op2) const;
+    bool operator!=(const Obstacle & op2) const;
+    bool operator<(const Obstacle & op2) const;
+    bool operator<=(const Obstacle & op2) const;
+    bool operator>(const Obstacle & op2) const;
+    bool operator>=(const Obstacle & op2) const;
 
-    //add movement effects
-    Obstacle operator+(const Obstacle& rhs) const;  
-    Obstacle& operator+=(const Obstacle& rhs);      
-    Obstacle operator-(const Obstacle& rhs) const;
-    Obstacle& operator-=(const Obstacle& rhs);
+    Obstacle operator+(const Obstacle & op2) const;
+    Obstacle & operator+=(const Obstacle & op2);
+    Obstacle operator-(const Obstacle & op2) const;
+    Obstacle & operator-=(const Obstacle & op2);
 
-    friend ostream & operator<<(ostream & out, const Obstacle & src); // Print obstacle
-    friend istream & operator>>(istream & in, Obstacle & src);        // Read obstacle
+    friend ostream & operator<<(ostream & out, const Obstacle & op2);
+    friend istream & operator>>(istream & in, Obstacle & op2);
 
 protected:
-    char * name;               // Dynamically allocated name
-    string secret_message;     // Message shown to player when triggered
-    int movement_effect;       // Number of steps to move forward/backward
+    char * name;
+    string secret_message;
+    int movement_effect;
 
-    // Helper functions for dynamic memory
-    bool set_name(const char * src);  // Allocates & sets name
-    bool clear_name();                // Frees name memory
+    bool set_name(const char * src);
+    bool clear_name();
 };
 
+//------------------ Derived Class: KidObstacle ------------------
 
-//---------------------------------------------------------------------------------------------
-// KidObstacle 
 class KidObstacle : public Obstacle
 {
 public:
-    KidObstacle(); // Default constructor
-    KidObstacle(const char * name, const string & msg, int move, const char * reward); // constructor
-    KidObstacle(const KidObstacle & src);           // Copy constructor
-    KidObstacle & operator=(const KidObstacle & src); // Assignment operator
-    ~KidObstacle();                                 // Destructor
+    KidObstacle();
+    KidObstacle(const char * name, const string & msg, int move, const char * reward);
+    KidObstacle(const KidObstacle & op2);
+    KidObstacle & operator=(const KidObstacle & op2);
+    ~KidObstacle();
 
-    int display_info() const;                      // Show info about this kid obstacle
-    bool trigger_event();                           // Apply effect and display reward
+    int display_info() const;
+    int trigger_event() const;
 
-    const char * get_reward() const { return reward; } // Get reward name
+    bool operator==(const KidObstacle & op2) const;
 
-    bool operator==(const KidObstacle & src) const;    // Compare two kid obstacles
-    friend ostream & operator<<(ostream & out, const KidObstacle & src); // Print obstacle
-    friend istream & operator>>(istream & in, KidObstacle & src);        // Read obstacle
+    friend ostream & operator<<(ostream & out, const KidObstacle & op2);
+    friend istream & operator>>(istream & in, KidObstacle & op2);
 
 private:
-    char * reward; // Dynamically allocated reward string
+    char * reward;
 
-    bool set_reward(const char * src); // Allocate & set reward
-    bool clear_reward();               // Free reward memory
+    bool set_reward(const char * src);
+    bool clear_reward();
 };
 
+//------------------ Derived Class: TeenObstacle ------------------
 
-//---------------------------------------------------------------------------------------------
-// TeenObstacle
 class TeenObstacle : public Obstacle
 {
 public:
-    TeenObstacle(); // Default constructor
-    TeenObstacle(const char * name, const string & msg, int move, const string & scareType); //constructor
-    ~TeenObstacle();                                 // Destructor
+    TeenObstacle();
+    TeenObstacle(const char * name, const string & msg, int move, const string & scare);
+    TeenObstacle(const TeenObstacle & op2);
+    TeenObstacle & operator=(const TeenObstacle & op2);
+    ~TeenObstacle();
 
-    int display_info() const;                      // Show obstacle info
-    bool trigger_event();                           // Apply effect
+    int display_info() const;
+    int trigger_event() const;
 
-    const string & get_scare() const { return scare_type; } // Get scare type
+    bool operator==(const TeenObstacle & op2) const;
 
-    bool operator==(const TeenObstacle & src) const;       // Compare obstacles
-    friend ostream & operator<<(ostream & out, const TeenObstacle & src); // Print
-    friend istream & operator>>(istream & in, TeenObstacle & src);        // Read
+    friend ostream & operator<<(ostream & out, const TeenObstacle & op2);
+    friend istream & operator>>(istream & in, TeenObstacle & op2);
 
 private:
-    string scare_type; // Type of scary object: ghost, spider, skeleton
+    string scare_type;
 };
 
+//------------------ Derived Class: AdultObstacle ------------------
 
-//---------------------------------------------------------------------------------------------
-// AdultObstacle 
 class AdultObstacle : public Obstacle
 {
 public:
-    AdultObstacle(); // Default constructor
-    AdultObstacle(const char * name, const string & msg, int move, const string & challenge); // Constructor
-    ~AdultObstacle();                                 // Destructor
+    AdultObstacle();
+    AdultObstacle(const char * name, const string & msg, int move, const string & challenge);
+    AdultObstacle(const AdultObstacle & op2);
+    AdultObstacle & operator=(const AdultObstacle & op2);
+    ~AdultObstacle();
 
-    int display_info() const;                        // Show obstacle info
-    bool trigger_event();                             // Apply effect
+    int display_info() const;
+    int trigger_event() const;
 
-    const string & get_challenge() const { return challenge_text; } // Get riddle/puzzle
+    bool operator==(const AdultObstacle & op2) const;
 
-    bool operator==(const AdultObstacle & src) const;       // Compare obstacles
-    friend ostream & operator<<(ostream & out, const AdultObstacle & src); // Print
-    friend istream & operator>>(istream & in, AdultObstacle & src);        // Read
+    friend ostream & operator<<(ostream & out, const AdultObstacle & op2);
+    friend istream & operator>>(istream & in, AdultObstacle & op2);
 
 private:
-    string challenge_text; // Text of puzzle or riddle
+    string challenge_text;
 };
-
