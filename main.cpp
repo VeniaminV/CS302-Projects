@@ -23,7 +23,5 @@ int main()
     cout << "\n--- Display All Obstacles ---\n";
     house.display_all();
 
-
-
 return 0;
 }

@@ -20,9 +20,11 @@ public:
 
     bool display_all() const;
 
+
 private:
     DLL<KidObstacle> kids;
     DLL<TeenObstacle> teens;
     DLL<AdultObstacle> adults;
+
 };
 

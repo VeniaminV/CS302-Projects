@@ -44,4 +44,3 @@ bool HauntedHouse::display_all() const
     bool a = adults.display_all();
     return (k || t || a);
 }
-
