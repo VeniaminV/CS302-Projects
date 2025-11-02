@@ -39,6 +39,9 @@ bool HauntedHouse::add_adult_obstacle(const AdultObstacle & obj)
 
 bool HauntedHouse::display_all() const
 {
-    return kids.display_all() && teens.display_all() && adults.display_all();
+    bool k = kids.display_all();
+    bool t = teens.display_all();
+    bool a = adults.display_all();
+    return (k || t || a);
 }
 

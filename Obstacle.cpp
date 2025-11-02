@@ -309,17 +309,6 @@ istream & operator>>(istream & in, TeenObstacle & op2)
 AdultObstacle::AdultObstacle() : Obstacle(), challenge_text("") {}
 AdultObstacle::AdultObstacle(const char * n, const string & msg, int move, const string & c)
     : Obstacle(n, msg, move), challenge_text(c) {}
-AdultObstacle::AdultObstacle(const AdultObstacle & op2)
-    : Obstacle(op2), challenge_text(op2.challenge_text) {}
-AdultObstacle & AdultObstacle::operator=(const AdultObstacle & op2)
-{
-    if (this != &op2)
-    {
-        Obstacle::operator=(op2);
-        challenge_text = op2.challenge_text;
-    }
-    return *this;
-}
 AdultObstacle::~AdultObstacle() {}
 
 int AdultObstacle::display_info() const

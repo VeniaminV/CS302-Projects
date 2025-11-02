@@ -3,6 +3,7 @@
 // Template Node and DLL classes for managing obstacles
 
 #include <iostream>
+#include <cstring>
 using namespace std;
 
 template <typename Type>
@@ -13,6 +14,7 @@ public:
     Node_DLL<Type> * next;
     Node_DLL<Type> * prev;
 
+    Node_Dll() : data(), next(nullptr), prev(nullptr( {}
     Node_DLL(const Type & obj) : data(obj), next(nullptr), prev(nullptr) {}
 };
 

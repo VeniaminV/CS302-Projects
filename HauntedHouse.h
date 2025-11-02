@@ -21,8 +21,8 @@ public:
     bool display_all() const;
 
 private:
-    Node_DLL<KidObstacle> * kid_head;
-    Node_DLL<TeenObstacle> * teen_head;
-    Node_DLL<AdultObstacle> * adult_head;
+    Node_DLL<KidObstacle> kids;
+    Node_DLL<TeenObstacle> teens;
+    Node_DLL<AdultObstacle> adults;
 };
 

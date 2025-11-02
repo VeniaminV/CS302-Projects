@@ -5,6 +5,8 @@
 #include <cstring>      
 #include <string>      
 #include "Obstacle.h"   
+#include "HauntedHouse.h"
+
 using namespace std;
 int main()
 {
