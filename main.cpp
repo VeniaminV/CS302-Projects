@@ -10,6 +10,8 @@
 using namespace std;
 int main()
 {
+    srand(time(nullptr)); // seed random number generator
+    int move = rand() % 5 - 2; // random movement effect from -2 to +2
 
     HauntedHouse house;
 
