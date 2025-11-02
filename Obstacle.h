@@ -113,8 +113,8 @@ class AdultObstacle : public Obstacle
 public:
     AdultObstacle();
     AdultObstacle(const char * name, const string & msg, int move, const string & challenge);
-    AdultObstacle(const AdultObstacle & op2);
-    AdultObstacle & operator=(const AdultObstacle & op2);
+ //   AdultObstacle(const AdultObstacle & op2);
+//    AdultObstacle & operator=(const AdultObstacle & op2);
     ~AdultObstacle();
 
     int display_info() const;

@@ -43,3 +43,5 @@ private:
     bool clear_recursive(Node_DLL<Type> *& node);
 };
 
+
+#include "Node.tpp"
