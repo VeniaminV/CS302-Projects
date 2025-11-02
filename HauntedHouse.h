@@ -20,6 +20,10 @@ public:
 
     bool display_all() const;
 
+    DLL<KidObstacle>& get_kids() { return kids; }
+    DLL<TeenObstacle>& get_teens() { return teens; }
+    DLL<AdultObstacle>& get_adults() { return adults; }
+
 
 private:
     DLL<KidObstacle> kids;

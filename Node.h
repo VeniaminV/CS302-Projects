@@ -32,6 +32,8 @@ public:
     const Type* retrieve_by_name(const char* name) const;
     bool clear_list();
 
+    Node_DLL<Type>* get_head() const { return head; }
+
 private:
     Node_DLL<Type>* head;
     Node_DLL<Type>* tail;
