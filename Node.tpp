@@ -37,42 +37,21 @@ DLL<Type>::~DLL()
 template <typename Type>
 bool DLL<Type>::insert_back(const Type & obj)
 {
-    if (!head)
-    {
-        head = new Node_DLL<Type>(obj);
-        tail = head;
-        return true;
-    }
-    return insert_back_recursive(head, nullptr, obj);
+    return insert_back_recursive(head, obj);
 }
 
 // Recursive insert_back
 template <typename Type>
-bool DLL<Type>::insert_back_recursive(Node_DLL<Type> *& current, Node_DLL<Type> * headPtr, const Type & obj)
+bool DLL<Type>::insert_back_recursive(Node_DLL<Type> *& current, const Type & obj)
 {
     if (!current)
     {
         current = new Node_DLL<Type>(obj);
-        current->prev = headPtr;
-        if (!current->next) current->next = nullptr;
-
-        if (!headPtr)
-            head = current;
-
-        if (!current->next)
-            tail = current;
-
+        if (!head) head = current;
+        tail = current;
         return true;
     }
-    if (!current->next)
-    {
-        Node_DLL<Type> * newNode = new Node_DLL<Type>(obj);
-        newNode->prev = current;
-        current->next = newNode;
-        tail = newNode;
-        return true;
-    }
-    return insert_back_recursive(current->next, current, obj);
+    return insert_back_recursive(current->next, obj);
 }
 //-----------------------------------------------------------------------------
 // Display all (public)
@@ -114,36 +93,24 @@ const Type * DLL<Type>::retrieve_recursive(Node_DLL<Type> * current, const char 
 template <typename Type>
 bool DLL<Type>::remove_by_name(const char * name)
 {
-    return remove_recursive(head, nullptr, name);
+    return remove_recursive(head, name);
 }
 
 // Recursive remove
 template <typename Type>
-bool DLL<Type>::remove_recursive(Node_DLL<Type> *& current, Node_DLL<Type> * headPtr, const char * name)
+bool DLL<Type>::remove_recursive(Node_DLL<Type> *& current, const char * name)
 {
     if (!current) return false;
 
-    const char * n = current->data.get_name();
-    if (n && name && strcmp(n, name) == 0)
+    if (strcmp(current->data.get_name(), name) == 0)
     {
-        Node_DLL<Type> * toDelete = current;
-        Node_DLL<Type> * nextNode = current->next;
-
-        if (headPtr)
-            headPtr->next = nextNode;
-        else
-            head = nextNode;
-
-        if (nextNode)
-            nextNode->prev = headPtr;
-        else
-            tail = headPtr;
-
-        current = nextNode;
-        delete toDelete;
+        Node_DLL<Type>* temp = current;
+        current = current->next;
+        delete temp;
+        if (!current) tail = nullptr;
         return true;
     }
-    return remove_recursive(current->next, current, name);
+    return remove_recursive(current->next, name);
 }
 //-----------------------------------------------------------------------------
 // Clear list (public)

@@ -4,7 +4,7 @@
 #include <iostream>
 #include <cstring>      
 #include <string>      
-#include "Obstacle.h"   
+//#include "Obstacle.h"   
 #include "HauntedHouse.h"
 
 using namespace std;
