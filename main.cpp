@@ -3,10 +3,7 @@
 
 //This will be the game interface
 
-//veniamin velikoretskikh veniamin@pdx.edu
-//CS302 program 2
-//Haunted House Game
-
+// Haunted House Game - simplified teens mode
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
@@ -19,29 +16,27 @@ int main()
     srand(time(nullptr));
     HauntedHouse house;
 
-    // ---------------- Populate KIDS LIST (5) ----------------
+    //Adds obstacles
     house.add_kid_obstacle(KidObstacle("CandyGhost", "You found tasty candy!", 1, "Lollipop"));
     house.add_kid_obstacle(KidObstacle("PumpkinPal", "A friendly pumpkin!", 1, "Gold Star"));
     house.add_kid_obstacle(KidObstacle("BunnyBuddy", "Cute spooky bunny!", 1, "Stuffed Toy"));
     house.add_kid_obstacle(KidObstacle("MagicCauldron", "You get a magic treat!", 1, "Magic Potion"));
     house.add_kid_obstacle(KidObstacle("FriendlyBat", "A bat brings snacks!", 1, "Chocolate Bar"));
 
-    // ---------------- Populate TEENS LIST (5) ----------------
     house.add_teen_obstacle(TeenObstacle("ShadowHands", "Creepy whispers appear!", 0, "Shadow scare"));
     house.add_teen_obstacle(TeenObstacle("DarkCloak", "Something moves fast!", 0, "Cloak Jump"));
     house.add_teen_obstacle(TeenObstacle("GhoulEyes", "Eyes watch you!", 0, "Eye Flash"));
     house.add_teen_obstacle(TeenObstacle("CreepyDoll", "A doll laughs!", 0, "Doll Scare"));
     house.add_teen_obstacle(TeenObstacle("HallwaySpirit", "A ghost floats by!", 0, "Spirit Scream"));
 
-    // ---------------- Populate ADULT LIST (5) ----------------
     house.add_adult_obstacle(AdultObstacle("VampireLord", "A vampire challenges you!", 0, "Answer my riddle!"));
     house.add_adult_obstacle(AdultObstacle("BatSwarm", "Solve fast or retreat!", 0, "Count the wings!"));
     house.add_adult_obstacle(AdultObstacle("ZombieScholar", "Brainless? Let's see!", 0, "Solve math quickly!"));
     house.add_adult_obstacle(AdultObstacle("RiddleSpider", "It weaves numbers...", 0, "Answer correctly!"));
     house.add_adult_obstacle(AdultObstacle("MummyMaster", "Mystery wrapped tight!", 0, "Don't stumble!"));
 
-    // ---------------- Select Difficulty ----------------
-    cout << "🎃 Welcome to the Haunted House Game! 🎃\n";
+    //Select teh difficulty
+    cout << "Welcome to the Haunted House Game!\n";
     cout << "Choose difficulty:\n1 - Kids\n2 - Teens\n3 - Adults\nEnter choice: ";
 
     int choice;
@@ -52,42 +47,27 @@ int main()
     DLL<TeenObstacle>* tlist = nullptr;
     DLL<AdultObstacle>* alist = nullptr;
 
-    cout << endl;
+    if (choice == 1) klist = &house.get_kids();
+    else if (choice == 2) tlist = &house.get_teens();
+    else if (choice == 3) alist = &house.get_adults();
+    else { cout << "Invalid choice. Exiting.\n"; return 0; }
 
-    if (choice == 1) {
-        cout << "👶 Kids mode selected!\n";
-        klist = &house.get_kids();
-    }
-    else if (choice == 2) {
-        cout << "😱 Teens mode selected!\n";
-        tlist = &house.get_teens();
-    }
-    else if (choice == 3) {
-        cout << "🧛 Adults mode selected!\n";
-        alist = &house.get_adults();
-    }
-    else {
-        cout << "Invalid choice. Exiting.\n";
-        return 0;
-    }
-
-    cout << "There are 5 spooky obstacles ahead!\n\n";
+    cout << "\nThere are 5 obstacles ahead!\n\n";
 
     int position = 0;
     const int GOAL = 5;
 
+    // ---------------- Main Game Loop ----------------
     while (position < GOAL)
     {
         Node_DLL<KidObstacle>* kptr = nullptr;
         Node_DLL<TeenObstacle>* tptr = nullptr;
         Node_DLL<AdultObstacle>* aptr = nullptr;
 
-        // Set head pointers
-        if (klist != nullptr) kptr = klist->get_head();
-        if (tlist != nullptr) tptr = tlist->get_head();
-        if (alist != nullptr) aptr = alist->get_head();
+        if (klist) kptr = klist->get_head();
+        if (tlist) tptr = tlist->get_head();
+        if (alist) aptr = alist->get_head();
 
-        // Move pointer to current position
         for (int i = 0; i < position; ++i) {
             if (kptr) kptr = kptr->next;
             if (tptr) tptr = tptr->next;
@@ -97,43 +77,42 @@ int main()
         cout << "\n";
 
         // ---------------- KIDS MODE ----------------
-        if (klist)
-        {
+        if (klist) {
             cout << "You encounter: " << kptr->data.get_name() << "!\n";
             kptr->data.trigger_event();
-            cout << "Reward earned! ✅\n";
-            position += 1;
+            cout << "Reward earned!\n";
+            position++;
         }
 
         // ---------------- TEENS MODE ----------------
-        else if (tlist)
-        {
-            bool scared = rand() % 3 != 0; // 2/3 chance to get scared
-            if (!scared)
-            {
-                cout << "You encountered: " << tptr->data.get_name() 
-                     << " but you weren’t scared! ✅\n";
-                position += 1;
-            }
-            else
-            {
-                cout << "You encounter: " << tptr->data.get_name() << "!\n";
-                int move = tptr->data.trigger_event();
-                position += move;
+        else if (tlist) {
+            cout << "You encounter: " << tptr->data.get_name() << "!\n";
+            tptr->data.trigger_event();
+
+            char scared;
+            do {
+                cout << "Did you get scared? (y/n): ";
+                cin >> scared;
+                cin.ignore();
+            } while (scared != 'y' && scared != 'n');
+
+            if (scared == 'y') {
+                cout << "You jump back!\n";
+                position--;
                 if (position < 0) position = 0;
+            } else {
+                cout << "You move forward bravely.\n";
+                position++;
             }
         }
 
         // ---------------- ADULTS MODE ----------------
-        else if (alist)
-        {
+        else if (alist) {
             cout << "A challenge obstacle appears: " << aptr->data.get_name() << "!\n";
 
             int action = rand() % 3;
 
-            if (action == 0)
-            {
-                // Math challenge
+            if (action == 0) {
                 int a = rand() % 10;
                 int b = rand() % 10;
                 int answer;
@@ -142,38 +121,30 @@ int main()
                 cin >> answer;
                 cin.ignore();
 
-                if (answer == a + b)
-                {
-                    cout << "Correct! ✅ Move forward 2!\n";
+                if (answer == a + b) {
+                    cout << "Correct! Move forward 2.\n";
                     position += 2;
-                }
-                else
-                {
-                    cout << "Wrong! ❌ Go back 1!\n";
-                    position -= 1;
+                } else {
+                    cout << "Wrong! Go back 1.\n";
+                    position--;
                     if (position < 0) position = 0;
                 }
-            }
-            else if (action == 1)
-            {
-                cout << "You carefully pass forward ✅\n";
-                position += 1;
-            }
-            else
-            {
-                cout << "BOO! A surprise scare pushes you back ❌\n";
-                position -= 1;
+            } else if (action == 1) {
+                cout << "You carefully pass forward.\n";
+                position++;
+            } else {
+                cout << "Surprise scare pushes you back!\n";
+                position--;
                 if (position < 0) position = 0;
             }
         }
 
-        // Prompt to continue
-        cout << "➡️ You are now on obstacle #" << (position + 1) << " / " << GOAL << endl;
+        cout << "You are now on obstacle #" << (position + 1) << " / " << GOAL << endl;
         cout << "Press ENTER to continue...";
         cin.ignore();
     }
 
-    cout << "\n🎉 YOU MADE IT THROUGH THE HAUNTED HOUSE! 🎉\n";
+    cout << "\nYOU MADE IT THROUGH THE HAUNTED HOUSE!\n";
     return 1;
 }
 
