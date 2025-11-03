@@ -278,8 +278,25 @@ int TeenObstacle::display_info() const
 
 int TeenObstacle::trigger_event() const
 {
-    cout << "Boo! It's a " << scare_type << "!" << endl;
-    return Obstacle::trigger_event();
+   // cout << "Boo! It's a " << scare_type << "!" << endl;
+    //return Obstacle::trigger_event();
+    cout << scare_type << " jumps at you!" << endl;
+    cout << message << endl;
+
+    char c;
+    cout << "Did you get scared? (y/n): ";
+    cin >> c;
+
+    if (c == 'y' || c == 'Y')
+    {
+        cout << "You stumble backwards!" << endl;
+        return -1;
+    }
+    else
+    {
+        cout << "You push forward bravely!" << endl;
+        return 1;
+    }
 }
 
 bool TeenObstacle::operator==(const TeenObstacle & op2) const
