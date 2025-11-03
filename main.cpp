@@ -3,7 +3,9 @@
 
 //This will be the game interface
 
-
+//veniamin velikoretskikh veniamin@pdx.edu
+//CS302 program 2
+//Haunted House Game
 
 #include <iostream>
 #include <cstdlib>
@@ -11,7 +13,6 @@
 #include "HauntedHouse.h"
 
 using namespace std;
-
 
 int main()
 {
@@ -81,9 +82,10 @@ int main()
         Node_DLL<TeenObstacle>* tptr = nullptr;
         Node_DLL<AdultObstacle>* aptr = nullptr;
 
-        if (klist) kptr = klist->get_head();
-        if (tlist) tptr = tlist->get_head();
-        if (alist) aptr = alist->get_head();
+        // Set head pointers
+        if (klist != nullptr) kptr = klist->get_head();
+        if (tlist != nullptr) tptr = tlist->get_head();
+        if (alist != nullptr) aptr = alist->get_head();
 
         // Move pointer to current position
         for (int i = 0; i < position; ++i) {
@@ -94,7 +96,7 @@ int main()
 
         cout << "\n";
 
-        // Kids Mode
+        // ---------------- KIDS MODE ----------------
         if (klist)
         {
             cout << "You encounter: " << kptr->data.get_name() << "!\n";
@@ -103,13 +105,13 @@ int main()
             position += 1;
         }
 
-        // Teens Mode
+        // ---------------- TEENS MODE ----------------
         else if (tlist)
         {
-            // Random: sometimes no scare
-            if (rand() % 3 == 0)
+            bool scared = rand() % 3 != 0; // 2/3 chance to get scared
+            if (!scared)
             {
-                cout << "You encountered: " << tptr->data.get_name()
+                cout << "You encountered: " << tptr->data.get_name() 
                      << " but you weren’t scared! ✅\n";
                 position += 1;
             }
@@ -117,17 +119,15 @@ int main()
             {
                 cout << "You encounter: " << tptr->data.get_name() << "!\n";
                 int move = tptr->data.trigger_event();
-
                 position += move;
                 if (position < 0) position = 0;
             }
         }
 
-        // Adults Mode
+        // ---------------- ADULTS MODE ----------------
         else if (alist)
         {
-            cout << "A challenge obstacle appears: "
-                 << aptr->data.get_name() << "!\n";
+            cout << "A challenge obstacle appears: " << aptr->data.get_name() << "!\n";
 
             int action = rand() % 3;
 
@@ -167,11 +167,13 @@ int main()
             }
         }
 
+        // Prompt to continue
         cout << "➡️ You are now on obstacle #" << (position + 1) << " / " << GOAL << endl;
+        cout << "Press ENTER to continue...";
+        cin.ignore();
     }
 
     cout << "\n🎉 YOU MADE IT THROUGH THE HAUNTED HOUSE! 🎉\n";
     return 1;
 }
-
 
