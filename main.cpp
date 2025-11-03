@@ -3,7 +3,6 @@
 
 //This will be the game interface
 
-// Haunted House Game - simplified teens mode
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
