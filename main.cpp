@@ -1,161 +1,177 @@
-//veniamin velikoretskikh
-/*
+//veniamin velikoretskikh veniamin@pdx.edu
+//CS302 program 2
+
+//This will be the game interface
+
+
 
 #include <iostream>
-#include <cstring>      
-#include <string>      
-//#include "Obstacle.h"   
-#include "HauntedHouse.h"
-
-using namespace std;
-int main()
-{
-    srand(time(nullptr)); // seed random number generator
-    int move = rand() % 5 - 2; // random movement effect from -2 to +2
-
-    HauntedHouse house;
-
-    house.add_kid_obstacle(KidObstacle("CandyGhost", "You get candy!", 3, "Candy Bag"));
-    house.add_teen_obstacle(TeenObstacle("JumpScare", "You scream!", -1, "Loud Noise"));
-    house.add_adult_obstacle(AdultObstacle("VampireLord", "Solve my riddle!", -2, 
-                                           "Count the bats in this hall!"));
-
-    cout << "\n--- Display All Obstacles ---\n";
-    house.display_all();
-
-return 0;
-}
-*/
-#include <iostream>
-#include <string>
+#include <cstdlib>
+#include <ctime>
 #include "HauntedHouse.h"
 
 using namespace std;
 
-// Create a simple random addition problem and return correct answer
-int generate_riddle()
-{
-    int a = rand() % 5 + 1;
-    int b = rand() % 5 + 1;
 
-    cout << "\n🧛 RIDDLE: " << a << " + " << b << " = ?" << endl;
-    return a + b;
-}
-
-
-// Recursive play function for DLL
-template <typename Type>
-bool play_recursive(DLL<Type>& list, Node_DLL<Type>* current)
-{
-    if (!current)
-    {
-        cout << "\n🎉 You made it through the haunted house!\n";
-        return true;
-    }
-
-    cout << "\n====================================\n";
-    int move = current->data.trigger_event();
-
-    if (node->data.get_level() == "Adult")
-{
-    int correct_answer = generate_riddle();
-    int guess;
-    cin >> guess;
-
-    if (guess == correct_answer)
-    {
-        cout << "✅ Correct! The vampire lets you move forward." << endl;
-        move = 2;
-    }
-    else
-    {
-        cout << "❌ Incorrect! The vampire pushes you back!" << endl;
-        move = -1;
-    }
-}
-
-    cout << "Movement effect: " << move << endl;
-
-    // Remove current obstacle AFTER event
-    const char* name = current->data.get_name();
-    list.remove_by_name(name);
-
-    // Move to next or previous node based on movement
-    Node_DLL<Type>* next = current;
-    if (move > 0)
-    {
-        while (move-- && next) next = next->next;
-    }
-    else if (move < 0)
-    {
-        while (move++ && next) next = next->prev;
-    }
-
-    if (!next)
-        next = list.get_head(); // Teleport to start if fall off list
-
-    // Ask if player continues
-    cout << "\nContinue? (y/n): ";
-    string cont;
-    cin >> cont;
-    if (cont != "y")
-    {
-        cout << "\n👻 You fled the haunted house early...\n";
-        return false;
-    }
-
-    return play_recursive(list, next);
-}
-
-// Choose level and start
-bool play_game(HauntedHouse& house)
-{
-    int choice;
-    cout << "\nChoose a level to begin:\n"
-         << " 1 - Monster Candy Trail (Kids)\n"
-         << " 2 - Screamer Alley (Teens)\n"
-         << " 3 - Vampire Dungeon (Adults)\n"
-         << "Choice: ";
-    cin >> choice;
-
-    if (choice == 1 && house.get_kids().get_head())
-        return play_recursive(house.get_kids(), house.get_kids().get_head());
-
-    if (choice == 2 && house.get_teens().get_head())
-        return play_recursive(house.get_teens(), house.get_teens().get_head());
-
-    if (choice == 3 && house.get_adults().get_head())
-        return play_recursive(house.get_adults(), house.get_adults().get_head());
-
-    cout << "Invalid choice or no obstacles in this level.\n";
-    return false;
-}
-
-// MAIN
 int main()
 {
     srand(time(nullptr));
-
     HauntedHouse house;
 
-    house.add_kid_obstacle(KidObstacle("CandyGhost", "You get candy!", 3, "Candy Bag"));
-    house.add_kid_obstacle(KidObstacle("PumpkinPuff", "You find pumpkin treats!", 1, "Pumpkin Pie"));
+    // ---------------- Populate KIDS LIST (5) ----------------
+    house.add_kid_obstacle(KidObstacle("CandyGhost", "You found tasty candy!", 1, "Lollipop"));
+    house.add_kid_obstacle(KidObstacle("PumpkinPal", "A friendly pumpkin!", 1, "Gold Star"));
+    house.add_kid_obstacle(KidObstacle("BunnyBuddy", "Cute spooky bunny!", 1, "Stuffed Toy"));
+    house.add_kid_obstacle(KidObstacle("MagicCauldron", "You get a magic treat!", 1, "Magic Potion"));
+    house.add_kid_obstacle(KidObstacle("FriendlyBat", "A bat brings snacks!", 1, "Chocolate Bar"));
 
-    house.add_teen_obstacle(TeenObstacle("JumpScare", "You scream!", -1, "Loud Noise"));
-    house.add_teen_obstacle(TeenObstacle("CreepyCrawler", "Something touches your leg!", -1, "Spider Brush"));
+    // ---------------- Populate TEENS LIST (5) ----------------
+    house.add_teen_obstacle(TeenObstacle("ShadowHands", "Creepy whispers appear!", 0, "Shadow scare"));
+    house.add_teen_obstacle(TeenObstacle("DarkCloak", "Something moves fast!", 0, "Cloak Jump"));
+    house.add_teen_obstacle(TeenObstacle("GhoulEyes", "Eyes watch you!", 0, "Eye Flash"));
+    house.add_teen_obstacle(TeenObstacle("CreepyDoll", "A doll laughs!", 0, "Doll Scare"));
+    house.add_teen_obstacle(TeenObstacle("HallwaySpirit", "A ghost floats by!", 0, "Spirit Scream"));
 
-    house.add_adult_obstacle(AdultObstacle("VampireLord", "Solve my riddle!", -1,
-                                           "Count the bats in this hall!"));
-    house.add_adult_obstacle(AdultObstacle("BloodKnight", "Answer or suffer!", -1,
-                                           "How many coffins are there?"));
+    // ---------------- Populate ADULT LIST (5) ----------------
+    house.add_adult_obstacle(AdultObstacle("VampireLord", "A vampire challenges you!", 0, "Answer my riddle!"));
+    house.add_adult_obstacle(AdultObstacle("BatSwarm", "Solve fast or retreat!", 0, "Count the wings!"));
+    house.add_adult_obstacle(AdultObstacle("ZombieScholar", "Brainless? Let's see!", 0, "Solve math quickly!"));
+    house.add_adult_obstacle(AdultObstacle("RiddleSpider", "It weaves numbers...", 0, "Answer correctly!"));
+    house.add_adult_obstacle(AdultObstacle("MummyMaster", "Mystery wrapped tight!", 0, "Don't stumble!"));
 
-    cout << "\n--- Haunted House Contents ---\n";
-    house.display_all();
+    // ---------------- Select Difficulty ----------------
+    cout << "🎃 Welcome to the Haunted House Game! 🎃\n";
+    cout << "Choose difficulty:\n1 - Kids\n2 - Teens\n3 - Adults\nEnter choice: ";
 
-    cout << "\n--- Start Your Adventure ---\n";
-    play_game(house);
+    int choice;
+    cin >> choice;
+    cin.ignore();
 
-    cout << "\n--- Game Over ---\n";
-    return 0;
+    DLL<KidObstacle>* klist = nullptr;
+    DLL<TeenObstacle>* tlist = nullptr;
+    DLL<AdultObstacle>* alist = nullptr;
+
+    cout << endl;
+
+    if (choice == 1) {
+        cout << "👶 Kids mode selected!\n";
+        klist = &house.get_kids();
+    }
+    else if (choice == 2) {
+        cout << "😱 Teens mode selected!\n";
+        tlist = &house.get_teens();
+    }
+    else if (choice == 3) {
+        cout << "🧛 Adults mode selected!\n";
+        alist = &house.get_adults();
+    }
+    else {
+        cout << "Invalid choice. Exiting.\n";
+        return 0;
+    }
+
+    cout << "There are 5 spooky obstacles ahead!\n\n";
+
+    int position = 0;
+    const int GOAL = 5;
+
+    while (position < GOAL)
+    {
+        Node_DLL<KidObstacle>* kptr = nullptr;
+        Node_DLL<TeenObstacle>* tptr = nullptr;
+        Node_DLL<AdultObstacle>* aptr = nullptr;
+
+        if (klist) kptr = klist->get_head();
+        if (tlist) tptr = tlist->get_head();
+        if (alist) aptr = alist->get_head();
+
+        // Move pointer to current position
+        for (int i = 0; i < position; ++i) {
+            if (kptr) kptr = kptr->next;
+            if (tptr) tptr = tptr->next;
+            if (aptr) aptr = aptr->next;
+        }
+
+        cout << "\n";
+
+        // Kids Mode
+        if (klist)
+        {
+            cout << "You encounter: " << kptr->data.get_name() << "!\n";
+            kptr->data.trigger_event();
+            cout << "Reward earned! ✅\n";
+            position += 1;
+        }
+
+        // Teens Mode
+        else if (tlist)
+        {
+            // Random: sometimes no scare
+            if (rand() % 3 == 0)
+            {
+                cout << "You encountered: " << tptr->data.get_name()
+                     << " but you weren’t scared! ✅\n";
+                position += 1;
+            }
+            else
+            {
+                cout << "You encounter: " << tptr->data.get_name() << "!\n";
+                int move = tptr->data.trigger_event();
+
+                position += move;
+                if (position < 0) position = 0;
+            }
+        }
+
+        // Adults Mode
+        else if (alist)
+        {
+            cout << "A challenge obstacle appears: "
+                 << aptr->data.get_name() << "!\n";
+
+            int action = rand() % 3;
+
+            if (action == 0)
+            {
+                // Math challenge
+                int a = rand() % 10;
+                int b = rand() % 10;
+                int answer;
+
+                cout << "Solve: " << a << " + " << b << " = ? ";
+                cin >> answer;
+                cin.ignore();
+
+                if (answer == a + b)
+                {
+                    cout << "Correct! ✅ Move forward 2!\n";
+                    position += 2;
+                }
+                else
+                {
+                    cout << "Wrong! ❌ Go back 1!\n";
+                    position -= 1;
+                    if (position < 0) position = 0;
+                }
+            }
+            else if (action == 1)
+            {
+                cout << "You carefully pass forward ✅\n";
+                position += 1;
+            }
+            else
+            {
+                cout << "BOO! A surprise scare pushes you back ❌\n";
+                position -= 1;
+                if (position < 0) position = 0;
+            }
+        }
+
+        cout << "➡️ You are now on obstacle #" << (position + 1) << " / " << GOAL << endl;
+    }
+
+    cout << "\n🎉 YOU MADE IT THROUGH THE HAUNTED HOUSE! 🎉\n";
+    return 1;
 }
+
 
