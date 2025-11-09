@@ -1,7 +1,15 @@
 //Veniamin Velikoretskikh veniamin@pdx.edu
-//This is the template implementation
 
-#pragma once
+
+/*
+This is the template implementation for the DLL rucusive operations
+These function will work independent of the variable type. I't won't matter
+if we work with an adult or teen or kids object it will treat it the same. 
+
+We will insert, display, retrive, remove , clear, copy
+
+*/
+
 
 // Constructor
 template <typename Type>

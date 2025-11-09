@@ -1,7 +1,9 @@
 //veniamin velikoretskikh veniamin@pdx.edu
 //CS302 program 2
 
-//This will be the game interface
+//This will be the game interface, where the game actually takes place.
+//I will add osme obstacles first and then this is where the game will
+//run and the player will be able to play the 3 different level of difficulty
 
 #include <iostream>
 #include <cstdlib>

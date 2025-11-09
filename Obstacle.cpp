@@ -2,11 +2,8 @@
 //CS302 Fall 2025 Karla Fant
 
 //This file will have the function and operator implementation 
-//for the Obsticle.  
-
-// Veniamin Velikoretskikh veniamin@pdx.edu
-// CS302 Karla Fant - Program #2
-// Implementation for Obstacle classes
+//for the Obsticle classes. Includes display, trigger_events, operator overloads 
+//for polymorphic behaivior. 
 
 #include "Obstacle.h"
 #include <iostream>
