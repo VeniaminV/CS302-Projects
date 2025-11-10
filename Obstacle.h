@@ -7,6 +7,8 @@ This file contains the class prototypes for the Obstacle base class,
 its three derived classes (KidObstacle, TeenObstacle, AdultObstacle),
 and the HauntedHouse class that manages the game’s data structures.
 All obstacle levels are now stored in doubly linked lists (DLL).
+
+All classes provide display and trigger_envent funcitons and operator overloads.
 */
 
 

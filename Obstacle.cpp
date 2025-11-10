@@ -18,13 +18,19 @@ Obstacle::Obstacle() : name(nullptr), secret_message(""), movement_effect(0) {}
 Obstacle::Obstacle(const char * n, const string & msg, int move)
     : secret_message(msg), movement_effect(move)
 {
-    set_name(n);
+    if(!set_name(n))
+    { 
+	throw invalid_argument("Obstacle name cannot be null.");
+    }
 }
 
 Obstacle::Obstacle(const Obstacle & op2)
     : secret_message(op2.secret_message), movement_effect(op2.movement_effect)
 {
-    set_name(op2.name);
+    if(!set_name(op2.name))
+    {
+	throw runtime_error("Failed to copy Obstacle name." );
+    }
 }
 
 Obstacle & Obstacle::operator=(const Obstacle & op2)
@@ -169,12 +175,14 @@ KidObstacle::KidObstacle() : Obstacle(), reward(nullptr) {}
 KidObstacle::KidObstacle(const char * n, const string & msg, int move, const char * r)
     : Obstacle(n, msg, move)
 {
-    set_reward(r);
+    if (!set_reward(r))
+        throw invalid_argument("Reward cannot be null.");
 }
 
 KidObstacle::KidObstacle(const KidObstacle & op2) : Obstacle(op2)
 {
-    set_reward(op2.reward);
+    if (!set_reward(op2.reward))
+        throw runtime_error("Failed to copy reward.");
 }
 
 KidObstacle & KidObstacle::operator=(const KidObstacle & op2)

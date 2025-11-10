@@ -19,7 +19,8 @@ DLL<Type>::DLL() : head(nullptr), tail(nullptr) {}
 template <typename Type>
 DLL<Type>::DLL(const DLL<Type> & src) : head(nullptr), tail(nullptr)
 {
-    copy_recursive(src.head);
+    if (!copy_recursive(src.head))
+        throw runtime_error("DLL copy failed.");
 }
 
 // Assignment
@@ -29,7 +30,8 @@ DLL<Type> & DLL<Type>::operator=(const DLL<Type> & src)
     if (this != &src)
     {
         clear_list();
-        copy_recursive(src.head);
+        if (!copy_recursive(src.head))
+            throw runtime_error("DLL assignment copy failed.");
     }
     return *this;
 }
@@ -66,7 +68,9 @@ bool DLL<Type>::insert_back_recursive(Node_DLL<Type> *& current, const Type & ob
 template <typename Type>
 bool DLL<Type>::display_all() const
 {
-    return display_recursive(head);
+    if (!display_recursive(head))
+        cerr << "Warning: No nodes to display.\n";
+    return true;
 }
 
 // Recursive display
@@ -83,7 +87,10 @@ bool DLL<Type>::display_recursive(Node_DLL<Type> * current) const
 template <typename Type>
 const Type * DLL<Type>::retrieve_by_name(const char * name) const
 {
-    return retrieve_recursive(head, name);
+    const Type* result = retrieve_recursive(head, name);
+    if (!result)
+        throw runtime_error("Item not found in list.");
+    return result;
 }
 
 // Recursive retrieve
@@ -101,7 +108,9 @@ const Type * DLL<Type>::retrieve_recursive(Node_DLL<Type> * current, const char 
 template <typename Type>
 bool DLL<Type>::remove_by_name(const char * name)
 {
-    return remove_recursive(head, name);
+    if (!remove_recursive(head, name))
+        cerr << "Warning: Item not found for removal.\n";
+    return true;
 }
 
 // Recursive remove
@@ -145,7 +154,8 @@ template <typename Type>
 bool DLL<Type>::copy_recursive(Node_DLL<Type> * src)
 {
     if (!src) return true;
-    insert_back(src->data);
+    if (!insert_back(src->data))
+        throw runtime_error("Failed to copy node data.");
     return copy_recursive(src->next);
 }
 
