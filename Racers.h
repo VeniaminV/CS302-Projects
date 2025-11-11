@@ -4,8 +4,10 @@
 //Racers.h
 //This file will include all the different types of racers
 //This will be done witha  hierarchy and dynamic binding 
+//There is going to be only one down casting in the DogRacer class with bark function
+//All the rest are virtual upcasting
 
-#include <strign>
+#include <string>
 #include <iostream>
 using namespace std; 
 
@@ -37,7 +39,7 @@ class DogRacer : public Racer
 {
 public: 
 	DogRacer(const string & name);
-	DogRacer(const DogRAcer & src);
+	DogRacer(const DogRacer & src);
 	DogRacer & operator = (const DogRAcer & rhs);
 	~DogRacer();
 
@@ -45,12 +47,13 @@ public:
 	bool takeBreak();
 	bool display() const;	
 
-	bool bark() const;
+ 	virtual bool bark() = 0;
 
 	Racer* copy() const;
 
 protected:
 	int tail_wag;  //How strong the tail is swagging
+	//The fater the tail wag the faster the dog will run
 
 };
 
@@ -60,7 +63,7 @@ class MonsterRacer : public Racer
 public: 
 	MonsterRacer(const string & name);
 	MonsterRacer(const MonsterRacer & src);
-	MosnterRacer & operator = (const MonsterRacer & rhs);
+	MosterRacer & operator = (const MonsterRacer & rhs);
 	~MonsterRacer();
 
 	bool performMove();
