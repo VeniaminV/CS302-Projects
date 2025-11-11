@@ -1,6 +1,7 @@
 //Veniamin Velikoretskikh veniamin@pdx.edu
 //CS302 Karla Fant 
 
+//Racers.cpp
 /*
 This file will contain for each class of the racer the implementation of the 
 constructors, copy constructors, assignment operators. It will also have the 
@@ -18,10 +19,10 @@ Racer::Racer() : name("Unknown"), position(0), stamina(100) {}
 Racer::Racer(const string & name, int position, int stamina)
 	: name(name), position(position), stamina(stamina) {}
 
-Racer::Racer(const RAcer & src)
+Racer::Racer(const Racer & src)
 	: name(src.name), postion(src.position), stamina(src.stamina)  {}
 
-Racer & Racer :: operator = (const RAcer & rhs) 
+Racer & Racer :: operator = (const Racer & rhs) 
 {
 	if(this != &rhs)
 	{
@@ -118,7 +119,7 @@ MonsterRacer::~MonsterRacer() {}
 bool MonsterRacer::performMove()
 {
 	if(stamina <= 0) return false;
-	position += 5 * jum_height;
+	position += 5 * jump_height;
 	stamina -= 20;
 	return true;
 }
@@ -135,13 +136,14 @@ bool MonsterRacer::display() const
 	cout << "Monster Racer " << name
 	<< ", Position: " << position 
 	<< ", Stamina: " <<stamina
-	<< ", Jump Height: " <<jum_height
+	<< ", Jump Height: " <<jump_height
 	<< endl;
+	return true;
 }
 
-Racer * MonsterRAcer::copy() const 
+Racer * MonsterRacer::copy() const 
 {
-	return new MonsterRAcer(*this);
+	return new MonsterRacer(*this);
 }
 
 

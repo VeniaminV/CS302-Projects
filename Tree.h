@@ -1,6 +1,7 @@
 //Veniamin Velikoretskikh veniamin@pdx.edu
 //CS302 Karla Fant
 
+//Tree.h
 /*
 This file will contain the Node and prototypes for the 
 2-3-4 tree. The Node class has everything that is about the 
@@ -23,7 +24,7 @@ public:
 
         Racer* items[MAX_ITEMS];
         Node* children[MAX_CHILDREN];
-        //int numItems;
+        int numItems;
 };
 
 

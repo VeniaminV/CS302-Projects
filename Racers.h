@@ -21,7 +21,7 @@ public:
 	Racer & operator = (const Racer & rhs);
 	virtual ~Racer();
 
-	virtual bool performMove();
+	virtual bool performMove() = 0;
 	virtual bool takeBreak();
 	virtual void display() const;
 
@@ -40,14 +40,14 @@ class DogRacer : public Racer
 public: 
 	DogRacer(const string & name);
 	DogRacer(const DogRacer & src);
-	DogRacer & operator = (const DogRAcer & rhs);
+	DogRacer & operator = (const DogRacer & rhs);
 	~DogRacer();
 
 	bool performMove();
 	bool takeBreak();
 	bool display() const;	
 
- 	virtual bool bark() = 0;
+ 	bool bark();
 
 	Racer* copy() const;
 
