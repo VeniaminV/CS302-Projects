@@ -23,7 +23,7 @@ public:
 
 	virtual bool performMove() = 0;
 	virtual bool takeBreak();
-	virtual void display() const;
+	virtual bool display();
 
 	virtual Racer* copy() const; //copy support
 
@@ -45,7 +45,7 @@ public:
 
 	bool performMove();
 	bool takeBreak();
-	bool display() const;	
+	bool display();	
 
  	bool bark();
 
@@ -63,12 +63,12 @@ class MonsterRacer : public Racer
 public: 
 	MonsterRacer(const string & name);
 	MonsterRacer(const MonsterRacer & src);
-	MosterRacer & operator = (const MonsterRacer & rhs);
+	MonsterRacer & operator = (const MonsterRacer & rhs);
 	~MonsterRacer();
 
 	bool performMove();
 	bool takeBreak();
-	bool display() const;	
+	bool display();	
 
 	Racer* copy() const;
 
@@ -88,7 +88,7 @@ public:
 
 	bool performMove();
 	bool takeBreak();
-	bool display() const;	
+	bool display();	
 
 	Racer* copy() const;
 

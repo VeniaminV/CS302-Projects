@@ -20,7 +20,7 @@ Racer::Racer(const string & name, int position, int stamina)
 	: name(name), position(position), stamina(stamina) {}
 
 Racer::Racer(const Racer & src)
-	: name(src.name), postion(src.position), stamina(src.stamina)  {}
+	: name(src.name), position(src.position), stamina(src.stamina)  {}
 
 Racer & Racer :: operator = (const Racer & rhs) 
 {
@@ -74,7 +74,7 @@ bool DogRacer:: takeBreak()
 }
 
 
-bool DogRacer::display() const
+bool DogRacer::display()
 {
 	cout << "Dog Racer " << name
 	<< ", Position: " <<position
@@ -131,7 +131,7 @@ bool MonsterRacer::takeBreak()
 	return true;
 }
 
-bool MonsterRacer::display() const 
+bool MonsterRacer::display()
 {
 	cout << "Monster Racer " << name
 	<< ", Position: " << position 
@@ -184,13 +184,14 @@ bool KidRacer::takeBreak()
        return true;
 }
 
-void KidRacer::display() const 
+bool KidRacer::display()
 {
        cout << "Kid Racer " << name
             << ", Position: " << position
             << ", Stamina: " << stamina
             << ", Snacks Left: " << snack_count
             << endl;
+	return true;
 }
 
 Racer* KidRacer::copy() const 
