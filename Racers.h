@@ -27,6 +27,8 @@ public:
 
 	virtual Racer* copy() const; //copy support
 
+	string getName() const { return name; }
+
 protected: 
 	string name;
 	int position;

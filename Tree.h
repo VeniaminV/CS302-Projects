@@ -7,44 +7,45 @@ This file will contain the Node and prototypes for the
 2-3-4 tree. The Node class has everything that is about the 
 node itself and the Tree class works with that node. 
 */
-
 #include "Racers.h"
+#include <iostream>
 
-class Node {
+class Node234 {
 public:
-        Node();
-        ~Node();
+        Node234();
+        ~Node234();
 
         bool isLeaf() const;
         bool isFull() const;
-
-	//integers for size of the tree
-        const int MAX_ITEMS = 3;
-        const int MAX_CHILDREN = 4;
+    
+        static const int MAX_ITEMS = 3;
+        static const int MAX_CHILDREN = 4;
 
         Racer* items[MAX_ITEMS];
-        Node* children[MAX_CHILDREN];
+        Node234* children[MAX_CHILDREN];
         int numItems;
 };
-
 
 class Tree {
 public:
         Tree();
         ~Tree();
 
-        bool insert(const Racer & racer);  // clones internally
+        bool insert(const Racer & racer);
         bool display() const;
         bool remove_all();
         bool is_empty() const;
 
-private:
-        Node* root;
+	bool split_node(Node* & node);
 
-        // Helpers
-        bool insertRecursive(Node* current, Racer* racer);
+private:
+        Node234* root;
+
+        // Recursive helpers
+        bool insertRecursive(Node234*& current, Racer* racer);
         Racer* cloneRacer(const Racer & racer) const;
-        bool displayRecursive(Node* current, int indent) const;
-        bool deleteAll(Node*& current);
+        bool displayRecursive(Node234* current, int indent) const;
+        bool deleteAll(Node234*& current);
 };
+
 
