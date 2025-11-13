@@ -35,6 +35,26 @@ Racer & Racer :: operator = (const Racer & rhs)
 
 Racer::~Racer() {}
 
+//PerformMOve function is pure virtual so I don't need a default implementation
+//So is the copy helper function
+
+// Default takeBreak simply restores a small amount of stamina.
+bool Racer::takeBreak() 
+{
+        stamina += 10;
+        if (stamina > 100) stamina = 100;
+        return true;
+}
+
+// Default display shows generic racer info.
+bool Racer::display() 
+{
+        cout << "Racer " << name
+             << ", Position: " << position
+             << ", Stamina: " << stamina << endl;
+        return true;
+}
+
 
 
 //------------------DogRacer------------------------------------

@@ -25,7 +25,7 @@ public:
 	virtual bool takeBreak();
 	virtual bool display();
 
-	virtual Racer* copy() const; //copy support
+	virtual Racer* copy() const = 0; //copy support
 
 	string getName() const { return name; }
 
@@ -75,7 +75,7 @@ public:
 	Racer* copy() const;
 
 protected: 
-	int jump_height;
+	int jump_height; //Will determine how fast the monster travels
 
 };
 
@@ -95,7 +95,8 @@ public:
 	Racer* copy() const;
 
 protected:
-	int snack_count;
+	//When taking a break, adds more stamina if a kid has a snack
+	int snack_count;  
 
 
 };
