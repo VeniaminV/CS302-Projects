@@ -5,43 +5,34 @@
 // Each function returns bool or int, never void
 // Includes exception handling for invalid memory or insertion errors
 
-
 #include "Tree.h"
 #include <iostream>
 #include <stdexcept>
 using namespace std;
 
 //---------------------------
-// Node implementation
+// Node234 implementation
 //---------------------------
-Node::Node() : numItems(0) {
-    for (int i = 0; i < MAX_ITEMS; i++)
+Node234::Node234() : numItems(0) {
+    for (int i = 0; i < MAX_ITEMS; ++i)
         items[i] = nullptr;
-    for (int i = 0; i < MAX_CHILDREN; i++)
+    for (int i = 0; i < MAX_CHILDREN; ++i)
         children[i] = nullptr;
 }
 
-Node::~Node() {
-    // Delete items safely
-    if (numItems > 0) {
-        if (items[0]) delete items[0];
-        if (numItems > 1 && items[1]) delete items[1];
-        if (numItems > 2 && items[2]) delete items[2];
+Node234::~Node234() {
+    for (int i = 0; i < numItems; ++i) {
+        delete items[i];
+        items[i] = nullptr;
     }
 }
 
-bool Node::isLeaf() const {
-    if (children[0] == nullptr)
-        return true;
-    else
-        return false;
+bool Node234::isLeaf() const {
+    return children[0] == nullptr;
 }
 
-bool Node::isFull() const {
-    if (numItems >= MAX_ITEMS)
-        return true;
-    else
-        return false;
+bool Node234::isFull() const {
+    return numItems >= MAX_ITEMS;
 }
 
 //---------------------------
@@ -54,29 +45,24 @@ Tree::~Tree() {
 }
 
 bool Tree::is_empty() const {
-    if (root == nullptr)
-        return true;
-    else
-        return false;
+    return root == nullptr;
 }
 
 //---------------------------
-// Public insert
+// Insert
 //---------------------------
-bool Tree::insert(const Racer & racer) {
+bool Tree::insert(const Racer& racer) {
     try {
-        Racer* newRacer = racer.copy(); // clone the racer
+        Racer* newRacer = racer.copy();
         if (!newRacer) throw runtime_error("Failed to clone Racer");
 
         if (!root) {
-            root = new Node();
-            if (!root) throw bad_alloc();
+            root = new Node234();
             root->items[0] = newRacer;
             root->numItems = 1;
             return true;
         }
 
-        // Recursive insert
         return insertRecursive(root, newRacer);
     }
     catch (const exception& e) {
@@ -88,37 +74,29 @@ bool Tree::insert(const Racer & racer) {
 //---------------------------
 // Recursive insert
 //---------------------------
-bool Tree::insertRecursive(Node* current, Racer* racer) {
+bool Tree::insertRecursive(Node234*& current, Racer* racer) {
     if (!current) return false;
 
-    // If leaf node
+    // Leaf node
     if (current->isLeaf()) {
         if (!current->isFull()) {
-            if (current->numItems == 0) current->items[0] = racer;
-            else if (current->numItems == 1) {
-                if (racer->getName() < current->items[0]->getName()) {
-                    current->items[1] = current->items[0];
-                    current->items[0] = racer;
-                } else current->items[1] = racer;
-            } else { // numItems == 2
-                if (racer->getName() < current->items[0]->getName()) {
-                    current->items[2] = current->items[1];
-                    current->items[1] = current->items[0];
-                    current->items[0] = racer;
-                } else if (racer->getName() < current->items[1]->getName()) {
-                    current->items[2] = current->items[1];
-                    current->items[1] = racer;
-                } else current->items[2] = racer;
+            // Insert in sorted order by name
+            int i = current->numItems - 1;
+            while (i >= 0 && racer->getName() < current->items[i]->getName()) {
+                current->items[i + 1] = current->items[i];
+                --i;
             }
+            current->items[i + 1] = racer;
             current->numItems++;
             return true;
-        } else {
+        } 
+        else {
             split_node(current);
             return insertRecursive(current, racer);
         }
     }
 
-    // Internal node: decide child based on name
+    // Internal node: choose the child
     if (racer->getName() < current->items[0]->getName())
         return insertRecursive(current->children[0], racer);
     else if (current->numItems == 1 || (current->numItems >= 2 && racer->getName() < current->items[1]->getName()))
@@ -130,44 +108,42 @@ bool Tree::insertRecursive(Node* current, Racer* racer) {
 }
 
 //---------------------------
-// Split a full node
+// Split node
 //---------------------------
-bool Tree::split_node(Node* & node) {
-    if (!node) return false;
-    if (node->numItems < 3) return false;
+bool Tree::split_node(Node234*& node) {
+    if (!node || node->numItems < 3) return false;
 
     try {
-        Node* right = new Node();
-        if (!right) throw bad_alloc();
+        Node234* right = new Node234();
 
         right->items[0] = node->items[2];
         right->numItems = 1;
+
         node->items[2] = nullptr;
         node->numItems = 2;
 
         right->children[0] = node->children[2];
         right->children[1] = node->children[3];
-        node->children[2] = nullptr;
-        node->children[3] = nullptr;
+        node->children[2] = node->children[3] = nullptr;
 
-        // Promote middle item if node is root
+        // If root, create new root
         if (node == root) {
-            Node* newRoot = new Node();
-            if (!newRoot) throw bad_alloc();
+            Node234* newRoot = new Node234();
             newRoot->items[0] = node->items[1];
             newRoot->numItems = 1;
+
             node->items[1] = nullptr;
+            node->numItems = 1;
+
             newRoot->children[0] = node;
             newRoot->children[1] = right;
             root = newRoot;
-            return true;
         }
 
-        // Note: parent promotion recursion not fully implemented for simplicity
         return true;
     }
-    catch (const exception & e) {
-        cerr << "Split failed: " << e.what() << endl;
+    catch (const bad_alloc&) {
+        cerr << "Split failed: memory allocation error\n";
         return false;
     }
 }
@@ -177,27 +153,19 @@ bool Tree::split_node(Node* & node) {
 //---------------------------
 bool Tree::display() const {
     if (!root) return false;
-    if (displayRecursive(root, 0)) return true;
-    else return false;
+    return displayRecursive(root, 0);
 }
 
-bool Tree::displayRecursive(Node* current, int indent) const {
+bool Tree::displayRecursive(Node234* current, int indent) const {
     if (!current) return false;
 
-    // Display rightmost child first
-    if (current->numItems == 3) displayRecursive(current->children[3], indent + 4);
-    else if (current->numItems == 2) displayRecursive(current->children[2], indent + 4);
-    else displayRecursive(current->children[1], indent + 4);
+    // Display rightmost children first
+    for (int i = current->numItems; i >= 0; --i)
+        displayRecursive(current->children[i], indent + 4);
 
-    // Display items in reverse
-    if (current->numItems == 3) current->items[2]->display();
-    if (current->numItems >= 2) current->items[1]->display();
-    if (current->numItems >= 1) current->items[0]->display();
-
-    // Display left children recursively
-    if (current->numItems == 3) displayRecursive(current->children[2], indent + 4);
-    else if (current->numItems == 2) displayRecursive(current->children[1], indent + 4);
-    else displayRecursive(current->children[0], indent + 4);
+    // Display items
+    for (int i = 0; i < current->numItems; ++i)
+        current->items[i]->display();
 
     return true;
 }
@@ -209,19 +177,17 @@ bool Tree::remove_all() {
     if (!root) return false;
     bool result = deleteAll(root);
     root = nullptr;
-    return result ? true : false;
+    return result;
 }
 
-bool Tree::deleteAll(Node* & current) {
+bool Tree::deleteAll(Node234*& current) {
     if (!current) return false;
 
-    deleteAll(current->children[0]);
-    deleteAll(current->children[1]);
-    deleteAll(current->children[2]);
-    deleteAll(current->children[3]);
+    for (int i = 0; i < Node234::MAX_CHILDREN; ++i)
+        deleteAll(current->children[i]);
 
-    for (int i = 0; i < current->numItems; i++) {
-        if (current->items[i]) delete current->items[i];
+    for (int i = 0; i < current->numItems; ++i) {
+        delete current->items[i];
         current->items[i] = nullptr;
     }
 

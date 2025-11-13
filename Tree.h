@@ -7,45 +7,44 @@ This file will contain the Node and prototypes for the
 2-3-4 tree. The Node class has everything that is about the 
 node itself and the Tree class works with that node. 
 */
+
 #include "Racers.h"
 #include <iostream>
+using namespace std;
 
 class Node234 {
 public:
-        Node234();
-        ~Node234();
+    static const int MAX_ITEMS = 3;
+    static const int MAX_CHILDREN = 4;
 
-        bool isLeaf() const;
-        bool isFull() const;
-    
-        static const int MAX_ITEMS = 3;
-        static const int MAX_CHILDREN = 4;
+    Node234();
+    ~Node234();
 
-        Racer* items[MAX_ITEMS];
-        Node234* children[MAX_CHILDREN];
-        int numItems;
+    bool isLeaf() const;
+    bool isFull() const;
+
+    Racer* items[MAX_ITEMS];
+    Node234* children[MAX_CHILDREN];
+    int numItems;
 };
 
 class Tree {
 public:
-        Tree();
-        ~Tree();
+    Tree();
+    ~Tree();
 
-        bool insert(const Racer & racer);
-        bool display() const;
-        bool remove_all();
-        bool is_empty() const;
-
-	bool split_node(Node* & node);
+    bool insert(const Racer& racer);
+    bool display() const;
+    bool remove_all();
+    bool is_empty() const;
 
 private:
-        Node234* root;
+    Node234* root;
 
-        // Recursive helpers
-        bool insertRecursive(Node234*& current, Racer* racer);
-        Racer* cloneRacer(const Racer & racer) const;
-        bool displayRecursive(Node234* current, int indent) const;
-        bool deleteAll(Node234*& current);
+    // Recursive helpers
+    bool insertRecursive(Node234*& current, Racer* racer);
+    bool split_node(Node234*& node);
+    bool displayRecursive(Node234* current, int indent) const;
+    bool deleteAll(Node234*& current);
 };
-
 
