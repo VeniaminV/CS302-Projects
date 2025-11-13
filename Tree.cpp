@@ -54,7 +54,7 @@ bool Tree::is_empty() const
 {
         return root == nullptr;
 }
-
+/*
 // Insert
 //---------------------------
 //makes a deep copy of RAcer and inserts it
@@ -119,6 +119,103 @@ bool Tree::insertRecursive(Node234*& current, Racer* racer)
     else
         return insertRecursive(current->children[3], racer);
 }
+*/
+// Insert
+//---------------------------
+// Makes a deep copy of Racer and inserts it into the correct position
+bool Tree::insert(const Racer& racer)
+{
+    try {
+        // Create a polymorphic deep copy using virtual copy()
+        Racer* newRacer = racer.copy();
+        if (!newRacer)
+            throw std::runtime_error("Failed to clone Racer");
+
+        // Case 1: Tree is empty — create a root node
+        if (!root) {
+            root = new Node234();
+            root->items[0] = newRacer;
+            root->numItems = 1;
+            return true;
+        }
+
+        // Case 2: Root is full — split it before insertion
+        if (root->isFull()) {
+            Node234* newRoot = new Node234();
+            newRoot->children[0] = root;
+            root = newRoot;
+            split_node(root->children[0]);
+        }
+
+        // Recursive insertion into the proper child
+        return insertRecursive(root, newRacer);
+    }
+    catch (const std::exception& e) {
+        std::cerr << "Insert failed: " << e.what() << std::endl;
+        return false;
+    }
+}
+
+// Recursive insert
+//---------------------------
+// Inserts a Racer into the correct leaf node recursively
+bool Tree::insertRecursive(Node234*& current, Racer* racer)
+{
+    if (!current) 
+        return false;
+
+    // Case 1: Leaf node
+    if (current->isLeaf()) {
+        // If not full, insert Racer in sorted order
+        if (!current->isFull()) {
+            return insertInLeaf(current, racer, current->numItems - 1);
+        } 
+        else {
+            // Node full — split and retry recursively
+            split_node(current);
+            return insertRecursive(current, racer);
+        }
+    }
+
+    // Case 2: Internal node — determine correct child recursively
+    int childIndex = findChildIndex(current, racer->getName());
+    if (current->children[childIndex] && current->children[childIndex]->isFull())
+        split_node(current->children[childIndex]);
+
+    return insertRecursive(current->children[childIndex], racer);
+}
+
+
+// Inserts a Racer into a leaf node in sorted order (fully recursive)
+bool Tree::insertInLeaf(Node234*& current, Racer* racer, int index)
+{
+    if (index < 0 || racer->getName() >= current->items[index]->getName()) {
+        current->items[index + 1] = racer;
+        current->numItems++;
+        return true;
+    }
+
+    // Shift item right and continue recursively
+    current->items[index + 1] = current->items[index];
+    return insertInLeaf(current, racer, index - 1);
+}
+
+
+// Determines which child to descend into (recursive-friendly helper)
+int Tree::findChildIndex(Node234* current, const string& name) const
+{
+    if (current->numItems == 0)
+        return 0;
+
+    if (name < current->items[0]->getName())
+        return 0;
+    if (current->numItems == 1 || (current->numItems >= 2 && name < current->items[1]->getName()))
+        return 1;
+    if (current->numItems == 2 || (current->numItems == 3 && name < current->items[2]->getName()))
+        return 2;
+    return 3;
+}
+
 
 // Split node
 //---------------------------
