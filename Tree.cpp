@@ -345,21 +345,6 @@ bool Tree::raceRound(Node234* current) {
                 dog->bark();
         }
     }
-/*
-    // Move all racers in this node
-    if (current->numItems > 0) 
-    {
-        if (!current->items[0]->performMove()) current->items[0]->takeBreak();
-        if (current->numItems > 1) 
-	{
-            if (!current->items[1]->performMove()) current->items[1]->takeBreak();
-        }
-        if (current->numItems > 2) 
-	{
-            if (!current->items[2]->performMove()) current->items[2]->takeBreak();
-        }
-    }
-*/
     // Recurse through children
     return raceRound(current->children[0]) &&
            raceRound(current->children[1]) &&

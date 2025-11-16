@@ -46,11 +46,12 @@ private:
 
     bool split_node(Node234*& node);
 
-// Recursive helpers used by implementations
+    // Recursive helpers used by implementations
     bool insertRecursive(Node234*& current, Racer* racer);
     bool insertInLeaf(Node234*& current, Racer* racer, int index);
     int findChildIndex(Node234* current, const std::string& name) const;
-//    bool split_child(Node234* parent, int childIndex); // split parent's child at childIndex
+
+    //display functions
     bool displayRecursive(Node234* current, int indent) const;
     bool displayItems(Node234* current, int index, int indent) const;
 
