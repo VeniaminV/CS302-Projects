@@ -91,6 +91,7 @@ bool Tree::insert(const Racer& racer)
     }
 }
 
+
 // Recursive insert
 //---------------------------
 // Inserts a Racer into the correct leaf node recursively
@@ -125,17 +126,6 @@ bool Tree::insertRecursive(Node234*& current, Racer* racer)
 // Inserts a Racer into a leaf node in sorted order (fully recursive)
 bool Tree::insertInLeaf(Node234*& current, Racer* racer, int index)
 {
-/*    if (index < 0 || racer->getName() >= current->items[index]->getName())
-    {
-        current->items[index + 1] = racer;
-        current->numItems++;
-        return true;
-    }
-
-    // Shift item right and continue recursively
-    current->items[index + 1] = current->items[index];
-    return insertInLeaf(current, racer, index - 1);
-*/
 
 // Base case: insert at start
     if (index < 0) {
@@ -223,6 +213,10 @@ bool Tree::split_node(Node234*& node)
         return false;
     }
 }
+
+
+
+
 
 
 // Display
