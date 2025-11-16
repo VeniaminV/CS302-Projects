@@ -179,6 +179,7 @@ bool Tree::insertRecursive(Node234*& current, Racer* racer)
 
     // Case 2: Internal node — determine correct child recursively
     int childIndex = findChildIndex(current, racer->getName());
+
     if (current->children[childIndex] && current->children[childIndex]->isFull())
         split_node(current->children[childIndex]);
 
@@ -189,7 +190,8 @@ bool Tree::insertRecursive(Node234*& current, Racer* racer)
 // Inserts a Racer into a leaf node in sorted order (fully recursive)
 bool Tree::insertInLeaf(Node234*& current, Racer* racer, int index)
 {
-    if (index < 0 || racer->getName() >= current->items[index]->getName()) {
+    if (index < 0 || racer->getName() >= current->items[index]->getName())
+    {
         current->items[index + 1] = racer;
         current->numItems++;
         return true;
@@ -200,7 +202,7 @@ bool Tree::insertInLeaf(Node234*& current, Racer* racer, int index)
     return insertInLeaf(current, racer, index - 1);
 }
 
-
+/*jjj
 // Determines which child to descend into (recursive-friendly helper)
 int Tree::findChildIndex(Node234* current, const string& name) const
 {
@@ -215,7 +217,19 @@ int Tree::findChildIndex(Node234* current, const string& name) const
         return 2;
     return 3;
 }
+*/
 
+// Determine which child to insert into
+int Tree::findChildIndex(Node234* current, const string& name) const
+{
+    if (name < current->items[0]->getName())
+        return 0;
+    if (current->numItems == 1 || name < current->items[1]->getName())
+        return 1;
+    if (current->numItems == 2 || name < current->items[2]->getName())
+        return 2;
+    return 3;
+}
 
 // Split node
 //---------------------------
@@ -273,6 +287,13 @@ bool Tree::split_node(Node234*& node)
 // Display
 //---------------------------
 //Displays from right to left
+bool Tree::display() const
+{
+    if(!root)
+	return false;
+    return displayRecursive(root, 0);
+}
+
 bool Tree::displayRecursive(Node234* current, int indent) const
 {
     if (!current) 
@@ -361,6 +382,16 @@ bool Tree::deleteAll(Node234*& current)
 
 //Remove all
 //-----------------------------
+bool Tree::remove_all()
+{
+    if(!root)
+	return false;
+
+    bool result = deleteAll(root)
+    root = nullptr;
+    return result;
+}
+
 bool Tree::deleteAll(Node234*& current)
 {
     if (!current) 
@@ -374,9 +405,31 @@ bool Tree::deleteAll(Node234*& current)
 
     delete current;
     current = nullptr;
+
     return true;
 }
 
+bool Tree::deleteChildren(Node234*& current, int index)
+{
+    if (index >= Node234::MAX_CHILDREN)
+        return true;
+
+    deleteAll(current->children[index]);
+    return deleteChildren(current, index + 1);
+}
+
+bool Tree::deleteItems(Node234*& current, int index)
+{
+    if (index >= current->numItems)
+        return true;
+
+    delete current->items[index];
+    current->items[index] = nullptr;
+
+    return deleteItems(current, index + 1);
+}
+
+/*
 bool Tree::deleteChildren(Node234*& current, int index)
 {
     if (!current) 
@@ -402,4 +455,4 @@ bool Tree::deleteItems(Node234*& current, int index)
 
     return deleteItems(current, index + 1);
 }
-
+*/
