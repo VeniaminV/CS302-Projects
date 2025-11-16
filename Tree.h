@@ -47,6 +47,9 @@ private:
     bool displayRecursive(Node234* current, int indent) const;
     bool deleteAll(Node234*& current);
 */
+
+    bool split_node(Node234*& node);
+
 // Recursive helpers used by implementations
     bool insertRecursive(Node234*& current, Racer* racer);
     bool insertInLeaf(Node234*& current, Racer* racer, int index);

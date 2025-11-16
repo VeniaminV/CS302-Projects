@@ -54,72 +54,7 @@ bool Tree::is_empty() const
 {
         return root == nullptr;
 }
-/*
-// Insert
-//---------------------------
-//makes a deep copy of RAcer and inserts it
-bool Tree::insert(const Racer& racer) 
-{
-    try {
-	//clone reacer with virtual copy()
-        Racer* newRacer = racer.copy();
-        if (!newRacer) throw runtime_error("Failed to clone Racer");
-	
-	//If the tree is empty, will create root
-        if (!root) {
-            root = new Node234();
-            root->items[0] = newRacer;
-            root->numItems = 1;
-            return true;
-        }
 
-        return insertRecursive(root, newRacer);
-    }
-    catch (const exception& e) {
-        cerr << "Insert failed: " << e.what() << endl;
-        return false;
-    }
-}
-
-// Recursive insert
-//---------------------------
-//Inserts a RAcer into the correct leaf node recursively
-bool Tree::insertRecursive(Node234*& current, Racer* racer) 
-{
-    if (!current) return false;
-
-    //Case 1. Leaf node, place RAcer directly into items[]
-    if (current->isLeaf())
-    {
-        if (!current->isFull()) {
-            // Insert in the correct place, sorted order by name
-            int i = current->numItems - 1;
-            while (i >= 0 && racer->getName() < current->items[i]->getName()) {
-                current->items[i + 1] = current->items[i];
-                --i;
-            }
-            current->items[i + 1] = racer;
-            current->numItems++;
-            return true;
-        } 
-        else {
-	    //The node is full, and we need to split before inserting
-            split_node(current);
-            return insertRecursive(current, racer);
-        }
-    }
-
-    //Case 2. Internal node, we need to determine which child to traverse to
-    if (racer->getName() < current->items[0]->getName())
-        return insertRecursive(current->children[0], racer);
-    else if (current->numItems == 1 || (current->numItems >= 2 && racer->getName() < current->items[1]->getName()))
-        return insertRecursive(current->children[1], racer);
-    else if (current->numItems == 2 || (current->numItems == 3 && racer->getName() < current->items[2]->getName()))
-        return insertRecursive(current->children[2], racer);
-    else
-        return insertRecursive(current->children[3], racer);
-}
-*/
 // Insert
 //---------------------------
 // Makes a deep copy of Racer and inserts it into the correct position
@@ -202,22 +137,7 @@ bool Tree::insertInLeaf(Node234*& current, Racer* racer, int index)
     return insertInLeaf(current, racer, index - 1);
 }
 
-/*jjj
-// Determines which child to descend into (recursive-friendly helper)
-int Tree::findChildIndex(Node234* current, const string& name) const
-{
-    if (current->numItems == 0)
-        return 0;
 
-    if (name < current->items[0]->getName())
-        return 0;
-    if (current->numItems == 1 || (current->numItems >= 2 && name < current->items[1]->getName()))
-        return 1;
-    if (current->numItems == 2 || (current->numItems == 3 && name < current->items[2]->getName()))
-        return 2;
-    return 3;
-}
-*/
 
 // Determine which child to insert into
 int Tree::findChildIndex(Node234* current, const string& name) const
@@ -326,59 +246,6 @@ bool Tree::displayItems(Node234* current, int index, int indent) const
     return displayItems(current, index - 1, indent);
 }
 
-// Display
-//---------------------------
-//Displays from right to left
-/*bool Tree::display() const 
-{
-    if (!root) return false;
-    return displayRecursive(root, 0);
-}
-
-bool Tree::displayRecursive(Node234* current, int indent) const 
-{
-    if (!current) return false;
-
-    // Display rightmost children first
-    for (int i = current->numItems; i >= 0; --i)
-        displayRecursive(current->children[i], indent + 4);
-
-    // Display items
-    for (int i = 0; i < current->numItems; ++i)
-        current->items[i]->display();
-
-    return true;
-}
-*/
-//---------------------------
-// Remove all
-//---------------------------
-/*
-bool Tree::remove_all() 
-{
-    if (!root) return false;
-    bool result = deleteAll(root);
-    root = nullptr;
-    return result;
-}
-
-bool Tree::deleteAll(Node234*& current) 
-{
-    if (!current) return false;
-
-    for (int i = 0; i < Node234::MAX_CHILDREN; ++i)
-        deleteAll(current->children[i]);
-
-    for (int i = 0; i < current->numItems; ++i) {
-        delete current->items[i];
-        current->items[i] = nullptr;
-    }
-
-    delete current;
-    current = nullptr;
-    return true;
-}
-*/
 
 //Remove all
 //-----------------------------
@@ -387,7 +254,7 @@ bool Tree::remove_all()
     if(!root)
 	return false;
 
-    bool result = deleteAll(root)
+    bool result = deleteAll(root);
     root = nullptr;
     return result;
 }
@@ -409,6 +276,7 @@ bool Tree::deleteAll(Node234*& current)
     return true;
 }
 
+//Deletes the chinldren 
 bool Tree::deleteChildren(Node234*& current, int index)
 {
     if (index >= Node234::MAX_CHILDREN)
@@ -418,6 +286,7 @@ bool Tree::deleteChildren(Node234*& current, int index)
     return deleteChildren(current, index + 1);
 }
 
+//Deletes the items in the node
 bool Tree::deleteItems(Node234*& current, int index)
 {
     if (index >= current->numItems)
@@ -429,30 +298,3 @@ bool Tree::deleteItems(Node234*& current, int index)
     return deleteItems(current, index + 1);
 }
 
-/*
-bool Tree::deleteChildren(Node234*& current, int index)
-{
-    if (!current) 
-        return false;
-
-    if (index >= Node234::MAX_CHILDREN) 
-        return true;
-
-    deleteAll(current->children[index]);
-    return deleteChildren(current, index + 1);
-}
-
-bool Tree::deleteItems(Node234*& current, int index)
-{
-    if (!current) 
-        return false;
-
-    if (index >= current->numItems) 
-        return true;
-
-    delete current->items[index];
-    current->items[index] = nullptr;
-
-    return deleteItems(current, index + 1);
-}
-*/
