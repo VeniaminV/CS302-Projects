@@ -97,8 +97,7 @@ bool Tree::insert(const Racer& racer)
 // Inserts a Racer into the correct leaf node recursively
 bool Tree::insertRecursive(Node234*& current, Racer* racer)
 {
-    if (!current) 
-        return false;
+    if (!current) return false;
 
     // Case 1: Leaf node
     if (current->isLeaf()) {
