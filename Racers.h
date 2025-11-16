@@ -29,6 +29,8 @@ public:
 
 	string getName() const { return name; }
 
+	int getPosition() const { return position; }
+
 protected: 
 	string name;
 	int position;
@@ -53,6 +55,7 @@ public:
 
 	Racer* copy() const;
 
+
 protected:
 	int tail_wag;  //How strong the tail is swagging
 	//The fater the tail wag the faster the dog will run
@@ -73,6 +76,7 @@ public:
 	bool display();	
 
 	Racer* copy() const;
+
 
 protected: 
 	int jump_height; //Will determine how fast the monster travels
