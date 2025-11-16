@@ -38,15 +38,11 @@ public:
     bool remove_all();
     bool is_empty() const;
 
+   // bool run_race();//this will initialise the race game
+    bool runRace(int target = 100) { return runRaceRecursive(root, target, 1); }
+
 private:
     Node234* root;
-
- /*   // Recursive helpers
-    bool insertRecursive(Node234*& current, Racer* racer);
-    bool split_node(Node234*& node);
-    bool displayRecursive(Node234* current, int indent) const;
-    bool deleteAll(Node234*& current);
-*/
 
     bool split_node(Node234*& node);
 
@@ -54,7 +50,7 @@ private:
     bool insertRecursive(Node234*& current, Racer* racer);
     bool insertInLeaf(Node234*& current, Racer* racer, int index);
     int findChildIndex(Node234* current, const std::string& name) const;
-    bool split_child(Node234* parent, int childIndex); // split parent's child at childIndex
+//    bool split_child(Node234* parent, int childIndex); // split parent's child at childIndex
     bool displayRecursive(Node234* current, int indent) const;
     bool displayItems(Node234* current, int index, int indent) const;
 
@@ -62,5 +58,10 @@ private:
     bool deleteAll(Node234*& current);
     bool deleteChildren(Node234*& current, int index);
     bool deleteItems(Node234*& current, int index);
+
+    //These will help run the race 
+    bool runRaceRecursive(Node234* current, int target, int round);
+    bool raceRound(Node234* current);
+    bool checkWinner(Node234* current, int target, string &winnerName);
 };
 

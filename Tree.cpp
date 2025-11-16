@@ -125,7 +125,7 @@ bool Tree::insertRecursive(Node234*& current, Racer* racer)
 // Inserts a Racer into a leaf node in sorted order (fully recursive)
 bool Tree::insertInLeaf(Node234*& current, Racer* racer, int index)
 {
-    if (index < 0 || racer->getName() >= current->items[index]->getName())
+/*    if (index < 0 || racer->getName() >= current->items[index]->getName())
     {
         current->items[index + 1] = racer;
         current->numItems++;
@@ -134,6 +134,27 @@ bool Tree::insertInLeaf(Node234*& current, Racer* racer, int index)
 
     // Shift item right and continue recursively
     current->items[index + 1] = current->items[index];
+    return insertInLeaf(current, racer, index - 1);
+*/
+
+// Base case: insert at start
+    if (index < 0) {
+        current->items[0] = racer;
+        current->numItems++;
+        return true;
+    }
+
+    // Insert after current if name >= current item
+    if (racer->getName() >= current->items[index]->getName()) {
+        current->items[index + 1] = racer;
+        current->numItems++;
+        return true;
+    }
+
+    // Shift current item to the right
+    current->items[index + 1] = current->items[index];
+
+    // Recurse to next index
     return insertInLeaf(current, racer, index - 1);
 }
 
@@ -236,8 +257,7 @@ bool Tree::displayItems(Node234* current, int index, int indent) const
     displayRecursive(current->children[index + 1], indent + 4);
 
     // 2. Indentation for clarity
-    for (int j = 0; j < indent; ++j)
-        std::cout << ' ';
+    for (int j = 0; j < indent; ++j) cout << ' ';
 
     // 3. Display current item
     current->items[index]->display();
@@ -296,5 +316,101 @@ bool Tree::deleteItems(Node234*& current, int index)
     current->items[index] = nullptr;
 
     return deleteItems(current, index + 1);
+}
+
+
+
+
+
+//__________________________________________________________________________
+//This part will be for the game implementation, so that the user can play it
+
+// Performs one round of the race recursively
+bool Tree::raceRound(Node234* current) {
+    if (!current) return true;
+
+
+    // Move all racers in this node
+    if (current->numItems > 0)
+    {
+        if (!current->items[0]->performMove()) current->items[0]->takeBreak();
+        // RTTI check
+        if (DogRacer* dog = dynamic_cast<DogRacer*>(current->items[0]))
+            dog->bark();
+
+        if (current->numItems > 1)
+        {
+            if (!current->items[1]->performMove()) current->items[1]->takeBreak();
+            if (DogRacer* dog = dynamic_cast<DogRacer*>(current->items[1]))
+                dog->bark();
+        }
+        if (current->numItems > 2)
+        {
+            if (!current->items[2]->performMove()) current->items[2]->takeBreak();
+            if (DogRacer* dog = dynamic_cast<DogRacer*>(current->items[2]))
+                dog->bark();
+        }
+    }
+/*
+    // Move all racers in this node
+    if (current->numItems > 0) 
+    {
+        if (!current->items[0]->performMove()) current->items[0]->takeBreak();
+        if (current->numItems > 1) 
+	{
+            if (!current->items[1]->performMove()) current->items[1]->takeBreak();
+        }
+        if (current->numItems > 2) 
+	{
+            if (!current->items[2]->performMove()) current->items[2]->takeBreak();
+        }
+    }
+*/
+    // Recurse through children
+    return raceRound(current->children[0]) &&
+           raceRound(current->children[1]) &&
+           raceRound(current->children[2]) &&
+           raceRound(current->children[3]);
+}
+
+// Checks if any racer has reached the target
+bool Tree::checkWinner(Node234* current, int target, string &winnerName) {
+    if (!current) return false;
+
+    if (current->numItems > 0 && current->items[0]->getPosition() >= target) {
+        winnerName = current->items[0]->getName();
+        return true;
+    }
+    if (current->numItems > 1 && current->items[1]->getPosition() >= target) {
+        winnerName = current->items[1]->getName();
+        return true;
+    }
+    if (current->numItems > 2 && current->items[2]->getPosition() >= target) {
+        winnerName = current->items[2]->getName();
+        return true;
+    }
+
+    return checkWinner(current->children[0], target, winnerName) ||
+           checkWinner(current->children[1], target, winnerName) ||
+           checkWinner(current->children[2], target, winnerName) ||
+           checkWinner(current->children[3], target, winnerName);
+}
+
+// Fully recursive race loop
+bool Tree::runRaceRecursive(Node234* current, int target, int round) {
+    if (!current) return false;
+
+    cout << "\n===== ROUND " << round << " =====\n";
+    raceRound(root);          // move all racers
+    display();                // display tree recursively
+
+    string winner;
+    if (checkWinner(root, target, winner)) {
+        cout << "\n*** Winner: " << winner << " reached " << target << " units! ***\n";
+        return true;
+    }
+
+    // Recurse to next round
+    return runRaceRecursive(root, target, round + 1);
 }
 
