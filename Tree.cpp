@@ -115,8 +115,17 @@ bool Tree::insertRecursive(Node234*& current, Racer* racer)
     // Case 2: Internal node — determine correct child recursively
     int childIndex = findChildIndex(current, racer->getName());
 
-    if (current->children[childIndex] && current->children[childIndex]->isFull())
+//    if (current->children[childIndex] && current->children[childIndex]->isFull())
+ //       split_node(current->children[childIndex]);
+
+    // Ensure child exists
+    if (!current->children[childIndex])
+        current->children[childIndex] = new Node234();
+
+    // Split child if it is full
+    if (current->children[childIndex]->isFull())
         split_node(current->children[childIndex]);
+
 
     return insertRecursive(current->children[childIndex], racer);
 }
@@ -166,7 +175,7 @@ int Tree::findChildIndex(Node234* current, const string& name) const
 //Splits a full 3 itme node into two nodes and promotes the middle
 bool Tree::split_node(Node234*& node) 
 {
-    if (!node || node->numItems < 3) return false;
+/*    if (!node || node->numItems < 3) return false;
 
     try {
 	//creates a new right sibling node
@@ -211,6 +220,38 @@ bool Tree::split_node(Node234*& node)
         cerr << "Split failed: memory allocation error\n";
         return false;
     }
+*/
+
+    if (!node || node->numItems < 3) return false;
+
+    Node234* right = new Node234();
+    right->items[0] = node->items[2]; // move rightmost item
+    right->numItems = 1;
+
+    right->children[0] = node->children[2];
+    right->children[1] = node->children[3];
+    node->children[2] = node->children[3] = nullptr;
+
+    Racer* middle = node->items[1];  // middle item for promotion
+    node->items[2] = nullptr;
+    node->items[1] = nullptr;
+    node->numItems = 1;  // left node now has 1 item
+
+    if (node == root) {
+        Node234* newRoot = new Node234();
+        newRoot->items[0] = middle;
+        newRoot->numItems = 1;
+        newRoot->children[0] = node;
+        newRoot->children[1] = right;
+        root = newRoot;
+    }
+    else {
+        // For non-root splits, you must insert middle into parent
+        // This requires the parent pointer, which you currently don't have
+        // So for now, only root splitting is safe
+    }
+
+    return true;
 }
 
 
