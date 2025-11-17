@@ -7,6 +7,10 @@ This file will contain the implementations for the race. I will have display men
 options for user to pick from. Also the add_racer function will determine what type of racer to add. 
 The main will call functions and make the program run. 
 */
+
+//Downcasting is implemented in the raceRound funciton like 320 in Tree.cpp
+//Upcasting is implemented in the add_racer function line 30 in main.cpp
+
 #include "Tree.h"
 #include <iostream>
 #include <string>

@@ -38,8 +38,8 @@ public:
     bool remove_all();
     bool is_empty() const;
 
-   // bool run_race();//this will initialise the race game
-    bool runRace(int target = 100) { return runRaceRecursive(root, target, 1); }
+    bool runRace();//this will initialise the race game
+   // bool runRace(int target = 100) { return runRaceRecursive(root, target, 1); }
 
 private:
     Node234* root;

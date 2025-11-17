@@ -1,5 +1,5 @@
 // Veniamin Velikoretskikh veniamin@pdx.edu
-// CS302 - Program #4
+// CS302 - Program #3
 // Implementation of 2-3-4 Tree that stores Racer objects
 // Fully recursive — no loops used
 // Each function returns bool or int, never void
@@ -175,52 +175,6 @@ int Tree::findChildIndex(Node234* current, const string& name) const
 //Splits a full 3 itme node into two nodes and promotes the middle
 bool Tree::split_node(Node234*& node) 
 {
-/*    if (!node || node->numItems < 3) return false;
-
-    try {
-	//creates a new right sibling node
-        Node234* right = new Node234();
-
-	//Move the last rightmost item to the new node
-        right->items[0] = node->items[2];
-        right->numItems = 1;
-
-	//Clear moved itme from the left node
-        node->items[2] = nullptr;
-        node->numItems = 2;
-
-	//REassingm children to the right node
-        right->children[0] = node->children[2];
-        right->children[1] = node->children[3];
-        node->children[2] = node->children[3] = nullptr;
-
-	//If splitting the root, we create a new root
-        if (node == root) {
-            Node234* newRoot = new Node234();
-	
-    	    //Middle item becomes root's only item
-            newRoot->items[0] = node->items[1];
-            newRoot->numItems = 1;
-
-	    //Clear moved itme from old node
-            node->items[1] = nullptr;
-            node->numItems = 1;
-
-	    //Connect children
-            newRoot->children[0] = node;
-            newRoot->children[1] = right;
-
-	    //Update root ptr
-            root = newRoot;
-        }
-
-        return true;
-    }
-    catch (const bad_alloc&) {
-        cerr << "Split failed: memory allocation error\n";
-        return false;
-    }
-*/
 
     if (!node || node->numItems < 3) return false;
 
@@ -246,9 +200,6 @@ bool Tree::split_node(Node234*& node)
         root = newRoot;
     }
     else {
-        // For non-root splits, you must insert middle into parent
-        // This requires the parent pointer, which you currently don't have
-        // So for now, only root splitting is safe
     }
 
     return true;
@@ -358,6 +309,13 @@ bool Tree::deleteItems(Node234*& current, int index)
 
 //__________________________________________________________________________
 //This part will be for the game implementation, so that the user can play it
+
+//this will initialise the race
+bool Tree::runRace()
+{
+    int target = 100;
+    return runRaceRecursive(root, target, 1);
+}
 
 // Performs one round of the race recursively
 bool Tree::raceRound(Node234* current) {
